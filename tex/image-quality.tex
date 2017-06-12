@@ -1,0 +1,51 @@
+\documentclass[mphy386-notes.tex]{subfiles}
+\begin{document}
+\section{Image Quality}
+In this section we develop three important tools that we can use to quantify
+image quality---contrast, resolution, and noise. In this section we will discuss
+these quantities without referencing a specific imaging modality.
+
+
+\subsection{Contrast}
+
+
+
+\subsection{Resolution}
+\subsection{Noise}
+\subsection{Rose Model}
+
+The signal is the difference in intensity between the object and its background:
+\begin{align*}
+  \Delta S = S_1 - S_2 = A\phi_1 - A\phi_2 = A\Delta\phi.
+\end{align*}
+
+where $A$ is the cross sectional area of the object, $\phi$ is the x-ray fluence
+with units of photons per unit area and $\Delta\phi = \phi_1-\phi_2$.
+
+The noise is the square-root of the variance in background over areas the size
+of the object. Assuming the noise follows Poisson statistics, where the
+variance means the mean value:
+\begin{align*}
+  \text{Noise} = \sqrt{\sigma^2} = \sqrt{\frac{A\phi_1 + A\phi_2}{2}} = \sqrt{A\bar{\phi}}
+\end{align*}
+Therefore, the signal-to-noise ratio is,
+\begin{align*}
+  \text{SNR} &= \frac{A\Delta\phi}{\sqrt{A\bar{phi}}}\\
+  \text{SNR} &= C\sqrt{A\bar{phi}} 
+\end{align*}
+where C is the radiation contrast:
+\begin{align*}
+  C = \frac{\Delta\phi}{\bar{phi}}
+\end{align*}
+This is the SNR for an ideal detector where we've assumed that
+\begin{itemize}
+\item complete absorption of incident quanta
+\item no added noise
+\item no loss of spatial resolution (i.e., no blurring)
+\end{itemize}
+
+ \fig{img/rose.png}{.25}{Test}{rose}
+ \fig{img/contrast.png}{.25}{Test}{constrast}
+
+\pagebreak
+\end{document}

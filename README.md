@@ -1,15 +1,15 @@
 Generate entire document:
 
->> latexmk
+`latexmk`
 
 Preview continuously:
 
->> latexmk -pvc
+`latexmk -pvc`
 
 Generate a single chapter:
 
->> latexmk tex/introduction
+`latexmk tex/introduction`
 
-Clean:
+Clean directory:
 
->> latexmk -c
+`latexmk -c`

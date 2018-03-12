@@ -10,111 +10,197 @@ Focal spot size
 \subsubsection{Interactions}
 Review of interactions in x-ray energy regime
 Scatter, grids
+
 \subsubsection{Detectors}
-The role of the x-ray detector is to convert the x-ray image into a visible
-image, and it should do so without altering it. Ideally, the x-ray detector
-should absorb all incident x-ray quanta.
+An ideal x-ray detector converts an x-ray image into a visible image without
+altering it. In this section we will review the major types of x-ray detectors
+and examine how they fail to be ideal.
 
-The fraction of incident x-ray photons that interact in the detector, $\eta$, is
-called the quantum detection efficiency and is given by
+The first task of any x-ray detector is to absorb all incident x-rays---a
+detector should not let any x-rays pass through. The fraction of incident x-rays
+that interact in the detector, $\eta$, is called the quantum detection
+efficiency. The quantum detection efficiency is related to the linear
+attenuation coefficient of the x-ray detector, $\mu$, and the thickness of the detector $t$ by
 \begin{align}
-  \eta = 1 - e^{-\mu t},
+  \eta = 1 - e^{-\mu t}. 
 \end{align}
-where $\mu$ is the linear attenuation coefficient of the x-ray detector and $t$ is
-its thickness.
-
-We desire to have $\mu t$ to be as large as possible. Therefore, the x-ray
-detector should be thick and made of a material with high atomic number and high
-physical density.
-
-SNR for a detector taking into account the quantum detection efficiency is
+An ideal detector will stop all x-rays, so we would like $\mu t$ to be as large
+as possible. Therefore, an x-ray detector should be thick and made of a material
+with high atomic number and high physical density. If the quantum detection
+efficiency is less than one, then the detector's SNR will be reduced by
+$\sqrt{\eta}$ and Eq. XXX becomes
 \begin{align}
   \text{SNR} = C\sqrt{\eta A\bar{\phi}}.
 \end{align}
+Recall from the Rose model that we need to an SNR of approximately 5 to detect a
+signal on a background. This means that reducing the quantum efficiency will
+require us to increase the incident x-ray fluence to maintain a fixed SNR.
+Increasing the photon fluence will increase the dose the patient, so clearly
+quantum efficiency is an important consideration for all detectors.
 
-\fig{img/sem.png}{1.0}{Test}{sem}
+\subsubsection*{Analog Detectors}
+Analog images are acquired and displayed on film. Film consists of a plastic
+base coated with a gelatin binder that contains light-sensitive silver halide
+crystals. Figures \ref{fig:film} and \ref{fig:sem} show schematic and scanning
+electron micrograph views of film.
 
-\emph{Types of X-ray Detectors}
+When a photon hits a (transparent) silver halide crystal, a photochemical
+reaction occurs that creates two (opaque) metallic silver atoms. Under typical
+conditions the number of metallic silver atoms is far too small for the film to
+become visibly opaque to human eyes, but the film now contains a latent image in
+the form of silver atoms within silver halide grains. To make the image visible,
+we need to ``amplify'' the number of metallic silver atoms in each grain using a
+\textit{developer solution}, then remove the unexposed silver halide crystals
+using a \textit{fixing solution}. The result is a \textit{photographic negative}
+that is dark (lots of metallic silver) in regions that have been exposed and
+light in regions that have not been exposed. In x-ray imaging the photographic
+negative is used directly, but in photographic imaging you need to invert the
+film brightness by projecting light through the negative, imaging the result on
+film, then repeating the development process. See \cite{barrett, stack} for a more
+detailed discussion of the film development process.
 
-The two major classes of x-ray detectors are analog and digital.
+For an x-ray film with a thin coat of silver halide grains, the grain size
+determines the spatial resolution. Film grains are approximately 0.2-2~$\mu$m in
+diameter which gives us a sense of the smallest resolvable feature. For
+comparison a typical 2018 scientific CCD has a pixel width of 6 $\mu$m and an
+iPhone X display has a pixel width of 55~$\mu$m. Film has unmatched spatial
+resolution even in 2018.
 
-Analog images are acquired and displayed on film. Film has a non-linear response
-to x-ray exposure. As we shall see, this presents many interesting
-phenomena. There are two types of analog detectors. Film Roentgen when making
-the first x-ray image used film. Film is made of silver bromide, and only
-approximately 3\% of incident x-rays interact in the film. See additional
-material on how film works.
+Only a few percent of incident x-rays interact as they pass through film.
+Because quantum efficiency is so important for medical imaging, most medical
+x-ray film uses a photographic emulsion coating on both sides of the plastic
+base. We could increase the thickness of the emulsion layers to improve quantum
+efficiency further, but this would reduce spatial resolution and make developing
+the film more difficult.
 
-Screen film systems
+We can improve the quantum efficiency of film by placing a \textit{fluorescence
+  screen} directly on the film. Fluorescence screens have a high attenuation
+coefficient and contain an x-ray phosphor that converts incident x-rays into
+many visible (plus infrared and ultraviolet) photons. These visible photons
+expose the film and the film can be developed normally. Unfortunately, the
+visible photons do not travel straight to the film along their generating
+x-ray's path---they spread out before they reach the film. This means that using
+a fluorescence screen improves quantum efficiency at the expense of spatial
+resolution. This type of detector is often called an \textit{indirect analog}
+detector because it indirectly detects the incident x-rays.
 
-To reduce the x-ray dose to the patient, films were used with florescence
-screens, which contain an x-ray phosphor. The x-ray phosphor converts the
-x-rays into visible light (plus infrared and ultraviolet), which exposes the
-film (see figure below). When the film is developed, the x-ray image appears.
-The film is used to both record and display the image. As we shall see, image
-quality can be compromised for screen-film systems compared to digital systems.
+\fig{img/film.jpg}{.7}{Schematic view of photographic film.
+  \cite{stack}}{film}
 
+\fig{img/sem.png}{0.7}{Scanning electron micrographs (SEM) of photographic film.
+  \textbf{A}: A top-down SEM image of the emulsion layer of T grain emulsion.
+  \textbf{B}: A cross section of the T grain emulsion film showing the grains in
+  the gelatin layer supported by the polymer film base below. \textbf{C}: Cubic
+  grain film emulsion in a top-down SEM view. \textbf{D}: Cross section of the
+  cubic grain film. SEM courtesy of Drs. Bernard Apple and John Sabol. Citation
+  needed.}{sem}
 
-The output of the film image is measured in film optical density (OD).  It is a
-measure of light transmission through the film.
+The input to a film detector is the x-ray exposure measured in coulombs per
+kilogram (C/kg) or r\"{o}ntgen (R). The output of a film detector is usually
+measured with a unitless property called optical density (OD). If a thin beam of
+light with intensity $I_0$ hits the film and the transmitted beam has intensity
+$I$, then the optical density of the film at that point is defined as
 \begin{align}
-  \text{OD} = -\ln\left(\frac{I}{I_0}\right).
+  \text{OD} = -\ln\left(\frac{I}{I_0}\right).\label{eq:od}
 \end{align}
+A high OD means that the film is opaque which corresponds to a high x-ray
+exposure. The relationship between x-ray exposure (input) and optical density
+(output) is often called the \textit{characteristic} curve, the
+\textit{Hurter-Driffield} curve, or the $D$---$\log E$ curve. An example of a
+characteristic curve is shown in Fig. \ref{fig:hd}. Note the often confused
+units on the characteristic curve---the horizontal axis uses a logarithmic
+exposure scale and the vertical axis uses a linear scale for optical density
+which is itself a logarithm of the input-output intensity ratio (see Eq.
+\ref{eq:od}).
 
-Higher OD means lower transmission and a darker film, which corresponds to a
-higher x-ray exposure (see characteristic curve to the left). The characteristic
-is very dependent on the film processing conditions, which can be quite
-variable. The exact proportion of chemicals and the exact temperature of the
-developer will affect the shape of the characteristic curve and the speed point.
-Care is taken to keep the chemistry and the temperature of the developer as
-constant as possible.
+\fig{img/hd-curve.png}{0.5}{A characteristic curve for film. Notice the
+  logarithmic scale on the horizontal axis and the linear scale on the vertical
+  axis.}{hd}
 
-\fig{img/hd-curve.png}{1.0}{Test}{hd}
+Let's examine the features of the characteristic curve in Fig. \ref{fig:hd}.
+When the film has not been exposed the optical density is not zero---even
+unexposed film is not completely transparent due to reflections, impurities, and
+thermal effects. As we start to expose the film, we begin to create metallic
+silver atoms. A single metallic silver atom in a grain is not enough to create a
+latent image though; about 4 metallic silver atoms are required in a single
+grain to ensure that it will be developed. This means that for low exposures the
+optical density will increase slowly---this is evident in the ``toe'' of the
+characteristic curve. At high exposures most of the grains in the film already
+have many metallic silver atoms, so increasing the exposure will not increase
+the optical density further---this is evident in the ``shoulder'' of the
+characteristic curve. Finally, at intermediate exposures the optical density
+increases linearly with the log exposure. The slope of characteristic curve is
+often called the \textit{speed} of the film because it summarizes how quickly a
+fixed exposure rate will increase the optical density---this terminology is
+borrowed from photographers who will use a ``fast'' film in situations where
+they require short exposure times e.g. sports photography. See \cite{barrett}
+chapter X for a complete derivation of film's characteristic curve.
 
-An important property of screen-film systems is known as reciprocity law
-failure.  If a certain exposure is required to reach a certain film OD, then if
-the same exposure is given but over a longer period of time, the film will have
-a lower OD.  This is a basic property of film that is exposed using light.  Film
-requires 3-10 light quanta to produce approximately 3-10 silver atoms in order
-for the grain to be developed grain (“How Film Works” handout).  If the flux of
-light is too low, then after receiving fewer than the threshold number of light
-quanta, the silver atoms, being unstable can ionize before additional silver
-atoms are produced.
+The characteristic curve also depends on the film processing conditions which
+can vary significantly. The proportions of chemicals in the developer solution
+and the temperature will affect the shape of the characteristic curve and the
+speed point. Care is taken to keep the chemistry and the temperature of the
+developer as constant as possible.
 
-DIGITAL
+Film's characteristic curve also depends on the exposure rate. The metallic
+silver atoms in each grain are unstable and will re-ionize back into the silver
+halide crystal over time. If the exposure rate is very low, then these
+re-ionization events can significantly reduce the number of developable grains
+which will reduce the OD in the final image. In other words, the characteristic
+curve will shift to the right for low exposure rates. This property of film is
+often referred to as \textit{reciprocity law failure} or the
+\textit{Schwarzschild effect} after Schwarzchild noticed the issue while imaging
+dim stars.
 
-Images are acquired in digital form and are usually displayed electronically,
-although they can be printed on film. Thus, the acquisition of the image is
-separate from the display of the image and each component can be optimized
-separately. Digital systems are usually respond linearly to x-ray exposure.
-The output of a digital image is in pixel value.
+\subsubsection*{Digital Detectors}
+We will briefly discuss several types of digital detectors and leave the details
+for Patrick's lectures. The defining feature of a digital detector is that its
+output is a digital signal with discrete values. Digital images are usually
+displayed electronically, but they can be also printed on film. Thus, the
+acquisition of the image is separate from the display of the image and each
+component can be optimized separately. The input to a digital detector is
+exposure, and the output is a pixel value (PV). Digital systems usually respond
+linearly to x-ray exposure.
 
-3. Indirect digital detectors Phosphor (often CsI) converts x rays to light and
-it is coupled to a CCD camera or a thin-film transistor (TFT) wafer. The latent
-image is then digitized and transferred to a computer for processing and display
+\textit{Indirect digital detectors} use a phosphorescent screen (often CsI)
+coupled to a charge-couple device (CCD) camera or a think-film transistor (TFT)
+water. Incident x-rays are converted to visible photons in the screen which
+generates a signal in the CCD. Indirect digital detectors are analogous to
+indirect analog detectors.
 
-4. Direct digital detectors These use materials (e.g., Se, a-Si, CdZnTe) that
-produce electron-hole pairs that can be collected directly. The an electric
-field is applied across the width of the detector and the electron-hole pairs
-follow the field lines that are perpendicular to the surface of the detector.
+\textit{Direct digital detectors} use materials that produce electron-hole pairs
+that can be collected directly. Selenium (Se), amorphous silicon (a-Si), and
+cadmium zinc telluride (CZT) are common materials for direct digital detectors.
+An electric field is applied across the width of the detector and the
+electron-hole pairs follow the field lines that are perpendicular to the surface
+of the detector where they are collected and read out.
 
-5. Photon counting detectors. It is possible for certain types of direct
-digital detectors to act as photon counting systems, where each individual x-ray
-interaction is count directly. Non-photon counting detectors integrate quanta
-(photons or electrons) over the total exposure time of the image acquisition.
+\textit{Photon counting detectors} can measure individual x-ray interactions.
+Some direct digital detectors can act as photon-counting detectors. Non-photon
+counting detectors integrate quanta (photons or electrons) over the total
+exposure time of the image acquisition.
 
-6. Computed radiography (CR) [as oppose to digital radiography (DR)] systems
-These store a latent image as electrons trapped in the bulk of the phosphor
-(usually BaFCl). The electrons are subsequently read out by scanning the
-phosphor with a laser beam. The laser light stimulates the trapped electrons
-back into the conduction band where they can return back to the valence band
-with the emission of light. This light is collect, usually using a PMT.
-Wavelength of the laser readout is lower than the light that is emitted by the
-phosphor.
+\textit{Computed radiography (CR) detectors} store a latent image as electrons
+trapped in a phosphor screen (usually BaFCl). The electrons are subsequently
+read out by scanning the phosphor with a laser beam. The laser light stimulates
+the trapped electrons back into the conduction band where they can return back
+to the valence band with the emission of light. The emitted light is collected
+to create a digital image. These detectors use the same principle as optically
+stimulated luminescent dosimeters (OSLD) in radiation dosimetry.
 
-5. Image Quality Properties of X-ray Detectors
+\subsubsection{*Comparison of Analog and Digital Detectors} 
 
-a. Contrast
+Contrast
+
+Speed
+
+Latitude
+
+Resolution
+
+Noise
+
+SNR
 
 The contrast in the image incident on the detector is given (ignoring any
 scattered radiation) is given by the radiation contrast, Eq. [4]. We want to
@@ -137,12 +223,12 @@ Therefore, for a digital detector, the radiographic contrast is equal to the
 radiation contrast and this is true for all exposure values. It is independent
 of the slope of the characteristic curve.
 
-For screen-film systems, the characteristic curve is called the H\&D curve, named after Hurter and Driffield, and it is a plot OD versus log relative exposure to the screen.
+% For screen-film systems, the characteristic curve is called the H\&D curve, named after Hurter and Driffield, and it is a plot OD versus log relative exposure to the screen.
 
-For screen-film systems, the response is non-linear and there is a toe, a
-shoulder region, and a linear region in between. Base+fog is the minimum OD due
-to the transparency of the film base and any darkening of the film due to
-thermal effects. The net OD is the gross OD minus the base+fog level.
+% For screen-film systems, the response is non-linear and there is a toe, a
+% shoulder region, and a linear region in between. Base+fog is the minimum OD due
+% to the transparency of the film base and any darkening of the film due to
+% thermal effects. The net OD is the gross OD minus the base+fog level.
 
 Characteristic curve for a screen-film system depends on the properties of the
 screen-film system and the film processing (developer) conditions.

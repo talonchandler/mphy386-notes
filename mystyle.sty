@@ -14,9 +14,15 @@ bottom = 1.5cm,
 left   = 1.5cm,
 right  = 1.5cm]{geometry}
 
-\setlength{\parindent}{2em}
-\setlength{\parskip}{0.25em}
-\renewcommand{\baselinestretch}{1.5}
+%\setlength{\parindent}{0em}
+\renewcommand{\baselinestretch}{1.25}
+
+% Set spacing between section headings and text
+%\usepackage{titlesec}
+% \titlespacing\section{0pt}{4pt plus 4pt minus 2pt}{4pt plus 2pt minus 2pt}
+% \titlespacing\subsection{0pt}{4pt plus 4pt minus 2pt}{4pt plus 2pt minus 2pt}
+% \titlespacing\subsubsection{0pt}{4pt plus 4pt minus 2pt}{4pt plus 2pt minus 2pt}
+
 
 \hyphenpenalty=10000
 
@@ -31,3 +37,5 @@ right  = 1.5cm]{geometry}
 }
 
 \usepackage{tikz}
+
+\def\bs{\ensuremath\boldsymbol}

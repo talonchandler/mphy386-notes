@@ -35,7 +35,7 @@ $\sqrt{\eta}$ and Eq. XXX becomes
 Recall from the Rose model that we need to an SNR of approximately 5 to detect a
 signal on a background. This means that reducing the quantum efficiency will
 require us to increase the incident x-ray fluence to maintain a fixed SNR.
-Increasing the photon fluence will increase the dose the patient, so clearly
+Increasing the photon fluence will increase the dose to the patient, so clearly
 quantum efficiency is an important consideration for all detectors.
 
 \subsubsection*{Analog Detectors}
@@ -203,9 +203,9 @@ Noise
 SNR
 
 The contrast in the image incident on the detector is given (ignoring any
-scattered radiation) is given by the radiation contrast, Eq. [4]. We want to
-know the contrast in the image called the radiographic contrast. To determine
-this, we need to know how x-ray exposure incident on the detector is converted
+scattered radiation) by the radiation contrast, Eq. [4]. We want to
+know the radiographic contrast --- the contrast in the final image. To determine
+this, we need to know how the x-ray exposure incident on the detector is converted
 to a visible image. This relationship between the input exposure and the output
 image is given by the characteristic curve.
 
@@ -213,13 +213,16 @@ b. Characteristic Curve
 
 Gives the relationship between the detector output and the exposure to the
 detector. For a digital detector the characteristic curve is linear. That is,
-, where PV is the pixel value in the image and G is the slope of the
-characteristic curve. Further:
+\begin{align}
+  \text{PV} = GE
+\end{align}
+where PV is the pixel value in the image, G is the slope of the
+characteristic curve and E is the incident exposure. Further:  % isn't exposure usually 'X'?
 \begin{align}
   \frac{\Delta E}{\bar{E}} = \frac{\Delta \text{PV}}{\bar{\text{PV}}} = C.
 \end{align}
 
-Therefore, for a digital detector, the radiographic contrast is equal to the
+That is, for a digital detector, the radiographic contrast is equal to the
 radiation contrast and this is true for all exposure values. It is independent
 of the slope of the characteristic curve.
 
@@ -230,18 +233,18 @@ of the slope of the characteristic curve.
 % to the transparency of the film base and any darkening of the film due to
 % thermal effects. The net OD is the gross OD minus the base+fog level.
 
-Characteristic curve for a screen-film system depends on the properties of the
+The characteristic curve for a screen-film system depends on the properties of the
 screen-film system and the film processing (developer) conditions.
 
-For a screen-film system, the radiographic contrast is given by difference in
+For a screen-film system, the radiographic contrast is given by the difference in
 optical density, D. It depends on the radiation contrast and the slope of the
 H\&D curve, called gamma (G). Radiographic contrast in a screen-film image is
 given by:
 \begin{align}
   G &= \frac{\Delta D}{\Delta(\ln E)}\\
-  \Delta D = G(\log_{10}e)\Delta(\ln E) = G(\log_{10}e)\frac{\Delta E}{\bar{E}} = CG\log_{10}e, 
+  \Delta D = G(\log_{10}e)\Delta(\ln E) &= G(\log_{10}e)\frac{\Delta E}{\bar{E}} = CG\log_{10}e, 
 \end{align}
-since $\phi = kE$, then $\frac{\Delta E}{\bar{E}} = \frac{\Delta \phi}{\bar{\phi}} = C =$ radiation contrast. 
+since $\phi = kE$, then $\frac{\Delta E}{\bar{E}} = \frac{\Delta \phi}{\bar{\phi}} = C =$ radiation contrast.
 
 Since the characteristic curve is not linear, the exposure to the detector is
 very important. The image can be properly exposed, but also under or over
@@ -437,7 +440,63 @@ Therefore,
 \subsubsection{Resolution}
 \subsubsection{Noise}
 \subsection{Effect of Scatter}
-\fig{img/scatter.png}{1.0}{Test}{scatter}
+
+
+\subsubsection{On Radiation Contrast}
+\fig{img/scatter.png}{1.0}{Left: Radiograph of the skull with contrast. Right:
+  Radiograph of the same skull with an anti-scatter grid in place. Note the
+  improvement in image contrast.}{scatter}
+% I'm assuming an anti-scatter grid is the difference between left and right
+% images, I could be wrong...
+
+The derivation of expressions for contrast and SNR under the Rose model in
+section 2.2 neglected the effects of scattered radiation. In general,
+scattered radiation always works to decrease the contrast and overall
+quality of an image, as seen in Figure \ref{fig:scatter}.
+This effect can be quantitatively demonstrated with a simple extension
+of the Rose model. 
+
+% Will make a different figure in the future similar to the one in section 2.2
+\fig{img/rose_with_scatter.png}{5cm}{Rose model with scatter.}{rose_with_scatter}
+
+Recall our previous definition of contrast under the Rose model,
+\begin{align}
+  C = \frac{\Delta \phi}{\bar{\phi}} = \frac{\phi_1 - \phi_2}{(\phi_1 + \phi_2)/2}
+\end{align}
+Referring to Figure \ref{fig:rose_with_scatter}, we can define a
+``no scatter'' contrast, $C_{NS}$, accounting only for contrast from
+the primary fluence components, $\phi_{1p}$ and $\phi_{2p}$, That is,
+\begin{align}
+  C_{NS} = \frac{\phi_{1p} - \phi_{2p}}{(\phi_{1p} + \phi_{2p})/2} = \frac{\phi_{1p} - \phi_{2p}}{P}
+\end{align}
+where we define $P$ as the mean primary fluence, $(\phi_{1p} + \phi_{2p})/2$.
+
+Likewise, we can define a ``scatter'' contrast, $C_S$,
+\begin{align}
+  C_S &= \frac{(\phi_{1p} + \phi_{1s}) - (\phi_{2p} + \phi_{2s})}{[(\phi_{1p} + \phi_{1s}) + (\phi_{2p} + \phi_{2s})]/2}\\
+      &= \frac{(\phi_{1p} - \phi_{2p}) + (\phi_{1s} - \phi_{2s})}{[(\phi_{1p} + \phi_{2p}) + (\phi_{1s} + \phi_{2s})]/2}\\
+\end{align}
+
+If we assume that the scatter component of each fluence is roughly equal, that is $\phi_{1s} \approx \phi_{2s} = \phi_S$, and define $S = \phi_S$, then $C_S$ can be written
+\begin{align}
+  C_S = \frac{\phi_{1p} - \phi_{2p}}{P + S}
+\end{align}
+and we see that scatter reduces contrast.
+
+We can relate the scatter and no-scatter contrasts as follows:
+\begin{align}
+  C_S &= \frac{\phi_{1p} - \phi_{2p}}{P + S}\left(\frac{P}{P}\right)\\
+      &= C_{NS}\left(\frac{P}{P + S}\right)\\
+      &= C_{NS}\left(1 - \frac{S}{P + S}\right) \\
+      &= C_{NS}(1 - \text{SF}) = C_{NS}\left(\frac{1}{1 + S/P}\right)
+\end{align}
+using the scatter fraction:
+\begin{align}
+  \text{SF} = \frac{S}{P + S}
+\end{align}
+and scatter-to-primary ratio, $S/P$. 
+
+
 \subsection{Effect of Focal Spot Size}
 
 

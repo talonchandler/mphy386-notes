@@ -440,7 +440,63 @@ Therefore,
 \subsubsection{Resolution}
 \subsubsection{Noise}
 \subsection{Effect of Scatter}
-\fig{img/scatter.png}{1.0}{Test}{scatter}
+
+
+\subsubsection{On Radiation Contrast}
+\fig{img/scatter.png}{1.0}{Left: Radiograph of the skull with contrast. Right:
+  Radiograph of the same skull with an anti-scatter grid in place. Note the
+  improvement in image contrast.}{scatter}
+% I'm assuming an anti-scatter grid is the difference between left and right
+% images, I could be wrong...
+
+The derivation of expressions for contrast and SNR under the Rose model in
+section 2.2 neglected the effects of scattered radiation. In general,
+scattered radiation always works to decrease the contrast and overall
+quality of an image, as seen in Figure \ref{fig:scatter}.
+This effect can be quantitatively demonstrated with a simple extension
+of the Rose model. 
+
+% Will make a different figure in the future similar to the one in section 2.2
+\fig{img/rose_with_scatter.png}{5cm}{Rose model with scatter.}{rose_with_scatter}
+
+Recall our previous definition of contrast under the Rose model,
+\begin{align}
+  C = \frac{\Delta \phi}{\bar{\phi}} = \frac{\phi_1 - \phi_2}{(\phi_1 + \phi_2)/2}
+\end{align}
+Referring to Figure \ref{fig:rose_with_scatter}, we can define a
+``no scatter'' contrast, $C_{NS}$, accounting only for contrast from
+the primary fluence components, $\phi_{1p}$ and $\phi_{2p}$, That is,
+\begin{align}
+  C_{NS} = \frac{\phi_{1p} - \phi_{2p}}{(\phi_{1p} + \phi_{2p})/2} = \frac{\phi_{1p} - \phi_{2p}}{P}
+\end{align}
+where we define $P$ as the mean primary fluence, $(\phi_{1p} + \phi_{2p})/2$.
+
+Likewise, we can define a ``scatter'' contrast, $C_S$,
+\begin{align}
+  C_S &= \frac{(\phi_{1p} + \phi_{1s}) - (\phi_{2p} + \phi_{2s})}{[(\phi_{1p} + \phi_{1s}) + (\phi_{2p} + \phi_{2s})]/2}\\
+      &= \frac{(\phi_{1p} - \phi_{2p}) + (\phi_{1s} - \phi_{2s})}{[(\phi_{1p} + \phi_{2p}) + (\phi_{1s} + \phi_{2s})]/2}\\
+\end{align}
+
+If we assume that the scatter component of each fluence is roughly equal, that is $\phi_{1s} \approx \phi_{2s} = \phi_S$, and define $S = \phi_S$, then $C_S$ can be written
+\begin{align}
+  C_S = \frac{\phi_{1p} - \phi_{2p}}{P + S}
+\end{align}
+and we see that scatter reduces contrast.
+
+We can relate the scatter and no-scatter contrasts as follows:
+\begin{align}
+  C_S &= \frac{\phi_{1p} - \phi_{2p}}{P + S}\left(\frac{P}{P}\right)\\
+      &= C_{NS}\left(\frac{P}{P + S}\right)\\
+      &= C_{NS}\left(1 - \frac{S}{P + S}\right) \\
+      &= C_{NS}(1 - \text{SF}) = C_{NS}\left(\frac{1}{1 + S/P}\right)
+\end{align}
+using the scatter fraction:
+\begin{align}
+  \text{SF} = \frac{S}{P + S}
+\end{align}
+and scatter-to-primary ratio, $S/P$. 
+
+
 \subsection{Effect of Focal Spot Size}
 
 

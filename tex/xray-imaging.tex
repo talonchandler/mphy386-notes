@@ -1,438 +1,488 @@
 \documentclass[mphy386-notes.tex]{subfiles}
 \begin{document}
 \section{X-ray Imaging}
-\subsection{X-ray Imaging Physics}
-\subsubsection{Sources}
-X-ray tubes.
-kVp, mA, etc.
-Focal spot size
-
-\subsubsection{Interactions}
-Review of interactions in x-ray energy regime
-Scatter, grids
-
-\subsubsection{Detectors}
-An ideal x-ray detector converts an x-ray image into a visible image without
-altering it. In this section we will review the major types of x-ray detectors
-and examine how they fail to be ideal.
-
-The first task of any x-ray detector is to absorb all incident x-rays---a
-detector should not let any x-rays pass through. The fraction of incident x-rays
-that interact in the detector, $\eta$, is called the quantum detection
-efficiency. The quantum detection efficiency is related to the linear
-attenuation coefficient of the x-ray detector, $\mu$, and the thickness of the detector $t$ by
+\subsection{Basics}
+We can create an x-ray imaging system by assembling an x-ray \textbf{source}, an
+\textbf{object}, and a \textbf{detector}. Figure \ref{fig:simple} shows a simple
+example of an x-ray imaging system---we place an x-ray fluence $\bs{\phi}_0$
+incident on an object with two attenuation coefficients $\mu_1$ and $\mu_2$. Note that we use bold symbols to indicate random variables.
+\begin{figure}[h]
+\begin{center}
+  \begin{tikzpicture}[>=stealth]
+    \filldraw[fill=black!10!white, draw=black] (-2,-1) rectangle (2,1);
+    \filldraw[fill=black!30!white, draw=black] (-0.5,-0.5) rectangle (0.5,0.5);
+    \draw [|-|] (2.4,-1) -- (2.4,1);
+    \draw [|-|] (0.9,-0.5) -- (0.9,0.5);
+    \node[right] at (1.0,0) {$t_2$};
+    \node[right] at (2.5,0) {$t_1$};
+    \node at (0,0) {$\mu_2$};
+    \node at (-1.25,0) {$\mu_1$};
+    \draw [->] (-1.25,2) -- (-1.25,1.1);
+    \draw [->] (0,2) -- (0,1.1);
+    \node at (-1.55,1.6) {$\bs{\phi}_0$};
+    \node at (-.3,1.6) {$\bs{\phi}_0$};    
+    \draw [->] (-1.25,-1.1) -- (-1.25,-2);
+    \draw [->] (0,-1.1) -- (0,-2);
+    \node at (-1.55,-1.6) {$\bs{\phi}_1$};
+    \node at (-.3,-1.6) {$\bs{\phi}_{2}$};
+    \node[left] at (-2.5, 1.6) {\textbf{Source}};
+    \node[left] at (-2.5, 0) {\textbf{Object}};
+    \node[left] at (-2.5, -1.6) {\textbf{Detector}};    
+\end{tikzpicture}
+\end{center}
+\captionsetup{width=1.0\linewidth}
+\caption{Simplified x-ray imaging schematic. A collimated beam of x-rays with
+  fluence $\bs{\phi}_o$ is incident on an object with two attenuation
+  coefficients. A detector measures the output fluences $\bs{\phi}_{1,2}$.}
+\label{fig:simple}
+\end{figure}
+X-rays are attenuated as they pass through the object so the exit fluences are
+related to the input fluence by
 \begin{align}
-  \eta = 1 - e^{-\mu t}. 
+  \bs{\phi}_1 &= \bs{\phi}_0e^{-\mu_1 t_1}\\
+  \bs{\phi}_2 &= \bs{\phi}_0e^{-\mu_1(t_1 - t_2) - \mu_2t_2}. 
 \end{align}
-An ideal detector will stop all x-rays, so we would like $\mu t$ to be as large
-as possible. Therefore, an x-ray detector should be thick and made of a material
-with high atomic number and high physical density. If the quantum detection
-efficiency is less than one, then the detector's SNR will be reduced by
-$\sqrt{\eta}$ and Eq. XXX becomes
+When we place a detector in the path of the exit beam we create an image of the
+object. 
+
+We will examine more realistic sources and detectors in later sections, but the
+simple example in Figure \ref{fig:simple} is sufficient for us to model image
+quality in x-ray imaging systems.
+
+\subsection{Rose Model}
+Suppose that we'd like to detect the presence or absence of the small object
+with attenuation $\mu_2$ in Figure \ref{fig:simple} with our imaging system. How
+well can we perform this task? What conditions do we need to meet to confidently
+say that the object is present or absent? How should we design our imaging
+system to meet these conditions? The Rose model supplies answers to these
+questions and gives us a solid framework for understanding image quality.
+
+First, we define the \textbf{signal} $S$ as the mean number of photons
+blocked by the object
 \begin{align}
-  \text{SNR} = C\sqrt{\eta A\bar{\phi}}.
+  S \equiv A(\text{E}\{\bs{\phi}_1\} - \text{E}\{\bs{\phi}_2\}) = A\Delta\phi
 \end{align}
-Recall from the Rose model that we need to an SNR of approximately 5 to detect a
-signal on a background. This means that reducing the quantum efficiency will
-require us to increase the incident x-ray fluence to maintain a fixed SNR.
-Increasing the photon fluence will increase the dose to the patient, so clearly
-quantum efficiency is an important consideration for all detectors.
+where $A$ is the cross sectional area of the object, $\text{E}\{\cdot\}$ denotes
+the expectation value, $\phi$ is the x-ray fluence in units of photons per unit
+area, and $\Delta\phi \equiv \text{E}\{\bs{\phi}_1\} -
+\text{E}\{\bs{\phi}_2\}$. This may seem like a peculiar way to define the
+signal---shouldn't the signal be the measured intensity difference between areas
+with and without the object? The reason for our definition is that it captures
+the role of object size in detectability. Intuitively, larger objects are easier
+to detect, so our definition of signal should reflect this.
 
-\subsubsection*{Analog Detectors}
-Analog images are acquired and displayed on film. Film consists of a plastic
-base coated with a gelatin binder that contains light-sensitive silver halide
-crystals. Figures \ref{fig:film} and \ref{fig:sem} show schematic and scanning
-electron micrograph views of film.
+Next, we consider the \textbf{noise} $N$ that corrupts our signal. Note that in
+signal-to-noise ratio discussions the word ``noise'' usually refers to the
+standard deviation of a random variable. We will use this meaning. In general
+the word ``noise'' refers to any random or unwanted signals.
 
-When a photon hits a (transparent) silver halide crystal, a photochemical
-reaction occurs that creates two (opaque) metallic silver atoms. Under typical
-conditions the number of metallic silver atoms is far too small for the film to
-become visibly opaque to human eyes, but the film now contains a latent image in
-the form of silver atoms within silver halide grains. To make the image visible,
-we need to ``amplify'' the number of metallic silver atoms in each grain using a
-\textit{developer solution}, then remove the unexposed silver halide crystals
-using a \textit{fixing solution}. The result is a \textit{photographic negative}
-that is dark (lots of metallic silver) in regions that have been exposed and
-light in regions that have not been exposed. In x-ray imaging the photographic
-negative is used directly, but in photographic imaging you need to invert the
-film brightness by projecting light through the negative, imaging the result on
-film, then repeating the development process. See \cite{barrett, stack} for a more
-detailed discussion of the film development process.
-
-For an x-ray film with a thin coat of silver halide grains, the grain size
-determines the spatial resolution. Film grains are approximately 0.2-2~$\mu$m in
-diameter which gives us a sense of the smallest resolvable feature. For
-comparison a typical 2018 scientific CCD has a pixel width of 6 $\mu$m and an
-iPhone X display has a pixel width of 55~$\mu$m. Film has unmatched spatial
-resolution even in 2018.
-
-Only a few percent of incident x-rays interact as they pass through film.
-Because quantum efficiency is so important for medical imaging, most medical
-x-ray film uses a photographic emulsion coating on both sides of the plastic
-base. We could increase the thickness of the emulsion layers to improve quantum
-efficiency further, but this would reduce spatial resolution and make developing
-the film more difficult.
-
-We can improve the quantum efficiency of film by placing a \textit{fluorescence
-  screen} directly on the film. Fluorescence screens have a high attenuation
-coefficient and contain an x-ray phosphor that converts incident x-rays into
-many visible (plus infrared and ultraviolet) photons. These visible photons
-expose the film and the film can be developed normally. Unfortunately, the
-visible photons do not travel straight to the film along their generating
-x-ray's path---they spread out before they reach the film. This means that using
-a fluorescence screen improves quantum efficiency at the expense of spatial
-resolution. This type of detector is often called an \textit{indirect analog}
-detector because it indirectly detects the incident x-rays.
-
-\fig{img/film.jpg}{.7}{Schematic view of photographic film.
-  \cite{stack}}{film}
-
-\fig{img/sem.png}{0.7}{Scanning electron micrographs (SEM) of photographic film.
-  \textbf{A}: A top-down SEM image of the emulsion layer of T grain emulsion.
-  \textbf{B}: A cross section of the T grain emulsion film showing the grains in
-  the gelatin layer supported by the polymer film base below. \textbf{C}: Cubic
-  grain film emulsion in a top-down SEM view. \textbf{D}: Cross section of the
-  cubic grain film. SEM courtesy of Drs. Bernard Apple and John Sabol. Citation
-  needed.}{sem}
-
-The input to a film detector is the x-ray exposure measured in coulombs per
-kilogram (C/kg) or r\"{o}ntgen (R). The output of a film detector is usually
-measured with a unitless property called optical density (OD). If a thin beam of
-light with intensity $I_0$ hits the film and the transmitted beam has intensity
-$I$, then the optical density of the film at that point is defined as
+We define the noise as the standard deviation of the number of photons detected
+in an area the size of the object when the object is absent. 
 \begin{align}
-  \text{OD} = -\ln\left(\frac{I}{I_0}\right).\label{eq:od}
-\end{align}
-A high OD means that the film is opaque which corresponds to a high x-ray
-exposure. The relationship between x-ray exposure (input) and optical density
-(output) is often called the \textit{characteristic} curve, the
-\textit{Hurter-Driffield} curve, or the $D$---$\log E$ curve. An example of a
-characteristic curve is shown in Fig. \ref{fig:hd}. Note the often confused
-units on the characteristic curve---the horizontal axis uses a logarithmic
-exposure scale and the vertical axis uses a linear scale for optical density
-which is itself a logarithm of the input-output intensity ratio (see Eq.
-\ref{eq:od}).
-
-\fig{img/hd-curve.png}{0.5}{A characteristic curve for film. Notice the
-  logarithmic scale on the horizontal axis and the linear scale on the vertical
-  axis.}{hd}
-
-Let's examine the features of the characteristic curve in Fig. \ref{fig:hd}.
-When the film has not been exposed the optical density is not zero---even
-unexposed film is not completely transparent due to reflections, impurities, and
-thermal effects. As we start to expose the film, we begin to create metallic
-silver atoms. A single metallic silver atom in a grain is not enough to create a
-latent image though; about 4 metallic silver atoms are required in a single
-grain to ensure that it will be developed. This means that for low exposures the
-optical density will increase slowly---this is evident in the ``toe'' of the
-characteristic curve. At high exposures most of the grains in the film already
-have many metallic silver atoms, so increasing the exposure will not increase
-the optical density further---this is evident in the ``shoulder'' of the
-characteristic curve. Finally, at intermediate exposures the optical density
-increases linearly with the log exposure. The slope of characteristic curve is
-often called the \textit{speed} of the film because it summarizes how quickly a
-fixed exposure rate will increase the optical density---this terminology is
-borrowed from photographers who will use a ``fast'' film in situations where
-they require short exposure times e.g. sports photography. See \cite{barrett}
-chapter X for a complete derivation of film's characteristic curve.
-
-The characteristic curve also depends on the film processing conditions which
-can vary significantly. The proportions of chemicals in the developer solution
-and the temperature will affect the shape of the characteristic curve and the
-speed point. Care is taken to keep the chemistry and the temperature of the
-developer as constant as possible.
-
-Film's characteristic curve also depends on the exposure rate. The metallic
-silver atoms in each grain are unstable and will re-ionize back into the silver
-halide crystal over time. If the exposure rate is very low, then these
-re-ionization events can significantly reduce the number of developable grains
-which will reduce the OD in the final image. In other words, the characteristic
-curve will shift to the right for low exposure rates. This property of film is
-often referred to as \textit{reciprocity law failure} or the
-\textit{Schwarzschild effect} after Schwarzchild noticed the issue while imaging
-dim stars.
-
-\subsubsection*{Digital Detectors}
-We will briefly discuss several types of digital detectors and leave the details
-for Patrick's lectures. The defining feature of a digital detector is that its
-output is a digital signal with discrete values. Digital images are usually
-displayed electronically, but they can be also printed on film. Thus, the
-acquisition of the image is separate from the display of the image and each
-component can be optimized separately. The input to a digital detector is
-exposure, and the output is a pixel value (PV). Digital systems usually respond
-linearly to x-ray exposure.
-
-\textit{Indirect digital detectors} use a phosphorescent screen (often CsI)
-coupled to a charge-couple device (CCD) camera or a think-film transistor (TFT)
-water. Incident x-rays are converted to visible photons in the screen which
-generates a signal in the CCD. Indirect digital detectors are analogous to
-indirect analog detectors.
-
-\textit{Direct digital detectors} use materials that produce electron-hole pairs
-that can be collected directly. Selenium (Se), amorphous silicon (a-Si), and
-cadmium zinc telluride (CZT) are common materials for direct digital detectors.
-An electric field is applied across the width of the detector and the
-electron-hole pairs follow the field lines that are perpendicular to the surface
-of the detector where they are collected and read out.
-
-\textit{Photon counting detectors} can measure individual x-ray interactions.
-Some direct digital detectors can act as photon-counting detectors. Non-photon
-counting detectors integrate quanta (photons or electrons) over the total
-exposure time of the image acquisition.
-
-\textit{Computed radiography (CR) detectors} store a latent image as electrons
-trapped in a phosphor screen (usually BaFCl). The electrons are subsequently
-read out by scanning the phosphor with a laser beam. The laser light stimulates
-the trapped electrons back into the conduction band where they can return back
-to the valence band with the emission of light. The emitted light is collected
-to create a digital image. These detectors use the same principle as optically
-stimulated luminescent dosimeters (OSLD) in radiation dosimetry.
-
-\subsubsection{*Comparison of Analog and Digital Detectors} 
-
-Contrast
-
-Speed
-
-Latitude
-
-Resolution
-
-Noise
-
-SNR
-
-The contrast in the image incident on the detector is given (ignoring any
-scattered radiation) by the radiation contrast, Eq. [4]. We want to
-know the radiographic contrast --- the contrast in the final image. To determine
-this, we need to know how the x-ray exposure incident on the detector is converted
-to a visible image. This relationship between the input exposure and the output
-image is given by the characteristic curve.
-
-b. Characteristic Curve
-
-Gives the relationship between the detector output and the exposure to the
-detector. For a digital detector the characteristic curve is linear. That is,
-\begin{align}
-  \text{PV} = GE
-\end{align}
-where PV is the pixel value in the image, G is the slope of the
-characteristic curve and E is the incident exposure. Further:  % isn't exposure usually 'X'?
-\begin{align}
-  \frac{\Delta E}{\bar{E}} = \frac{\Delta \text{PV}}{\bar{\text{PV}}} = C.
+  N &\equiv \sqrt{\text{Var}\{A\bs{\phi}_1\}}.\\
+  \intertext{$A\bs{\phi}_1$ is a Poisson-distributed random variable, so its variance is identical to its mean}
+  N &= \sqrt{\text{E}\{A\bs{\phi}_1\}}\\
+  N &= \sqrt{A\text{E}\{\bs{\phi}_1\}}.
 \end{align}
 
-That is, for a digital detector, the radiographic contrast is equal to the
-radiation contrast and this is true for all exposure values. It is independent
-of the slope of the characteristic curve.
-
-% For screen-film systems, the characteristic curve is called the H\&D curve, named after Hurter and Driffield, and it is a plot OD versus log relative exposure to the screen.
-
-% For screen-film systems, the response is non-linear and there is a toe, a
-% shoulder region, and a linear region in between. Base+fog is the minimum OD due
-% to the transparency of the film base and any darkening of the film due to
-% thermal effects. The net OD is the gross OD minus the base+fog level.
-
-The characteristic curve for a screen-film system depends on the properties of the
-screen-film system and the film processing (developer) conditions.
-
-For a screen-film system, the radiographic contrast is given by the difference in
-optical density, D. It depends on the radiation contrast and the slope of the
-H\&D curve, called gamma (G). Radiographic contrast in a screen-film image is
-given by:
+Finally, the signal-to-noise ratio is given by
+ \begin{align}
+   \text{SNR} &\equiv \frac{S}{N} = \frac{A\Delta\phi}{\sqrt{AE\{\bs{\phi}_1\}}}
+ \end{align}   
+% %  \text{SNR} &= C\sqrt{A\bar{\phi}} 
+% ^ is there a reason you've left this out?
+ 
+where $C$ is the radiation contrast:
 \begin{align}
-  G &= \frac{\Delta D}{\Delta(\ln E)}\\
-  \Delta D = G(\log_{10}e)\Delta(\ln E) &= G(\log_{10}e)\frac{\Delta E}{\bar{E}} = CG\log_{10}e, 
+  C = \frac{\Delta\phi}{\bar{\phi}}
 \end{align}
-since $\phi = kE$, then $\frac{\Delta E}{\bar{E}} = \frac{\Delta \phi}{\bar{\phi}} = C =$ radiation contrast.
+This is the SNR for an ideal detector where we've assumed that there is
+\begin{itemize}
+\item complete absorption of incident quanta
+\item no added noise
+\item no loss of spatial resolution (i.e., no blurring)
+\end{itemize}
 
-Since the characteristic curve is not linear, the exposure to the detector is
-very important. The image can be properly exposed, but also under or over
-exposed, where the radiographic contrast will be low (because G is low).  For
-digital system, this is not a problem (at least in terms of contrast) as
-illustrated below.
+\fig{img/contrast.png}{.25}{Test}{constrast}
 
-Effect of characteristic curve shape.  Top is for screen-film, which have a
-non-linear response. Bottom is for a digital system with a linear response.
-This figure only illustrates the effect on radiographic contrast and not noise
-nor SNR.
+\subsection{Linear Systems Model}
 
-c. Speed 
+In this section, we aim to devise a mathematical model to
+describe transmission radiography. Specifically, we would like to
+use linear systems theory to describe the final radiographic
+image as a convolution of the object with a point spread function (PSF)
+contributed by both the x-ray source and the detector.
 
-Speed is defined as the reciprocal of the exposure required to reach a net OD of
-1.0. The speed point is considered the exposure to give a properly exposed
-image. A fast system has high speed and slow system has low speed.  Screen-film
-systems have an optimum exposure that must be used in order to produce a useful
-image.
+To begin, we consider a simplified geometric representation of an x-ray
+system, shown in Figure~\ref{fig:xraymodel}:
 
-Factors Affecting Speed
-1.  X-ray absorption by the screen
-- phosphor type (atomic number, k-edge energy)
-- thickness and packing density
-- x-ray energy
-- crystal size
-2.  Conversion Efficiency of Screen (fraction of x-ray energy converted in optical energy)
-- physical properties of phosphor
-- optical properties of screen
-- concentration of activator atoms
-- x-ray energy
-3.  Film Sensitivity
-- silver content
-- sensitizers
-- film gain size, structure, etc.
-4.  Matching of light emission of the screen to the spectral sensitivity of the film
-5.  Film processing
+\fig{img/xraymodel.png}{0.65}{Simplified geometry of a radiographic
+  imaging system. Note: we will refer to the central plane as the
+``object plane,'' not ``aperture plane,'' as it appears here.}{xraymodel}
 
-d.	Latitude
+X-rays are generated at the anode of an x-ray tube, located in the
+\textbf{source plane} (with coordinate $\bs{r}$). They then pass through the
+\textbf{object plane} (with coordinate $\bs{r}'$), before
+being detected at the \textbf{detector plane} (with coordinate $\bs{r}''$).
+The distance between the source and object planes is $s_1$, and the distance
+between the object and detector planes is $s_2$. Clearly, there are a number
+of idealizations in this setup. We model the 3D anode and 3D object as
+2D planes, and assume that all three planes are parallel. Regardless,
+we can still draw important insights from this simplified model.
 
-For screen-film systems, since the curve is non-linear, the system has limited
-latitude. Latitude refers to the range in exposure that will produce density
-within the accepted range for diagnostic radiology (usually considered to be
-0.25 to 2.0). Latitude does not apply to digital systems. For screen-film
-systems, there is a tradeoff in latitude and contrast. Generally speaking,
-systems with high contrast (large G) have limited latitude and vice versa.
+\subsubsection{The Source}
 
-For the image on the right, System A has higher speed and wider latitude than
-System B. System B has higher contrast, but limited latitude.
+We describe the source by an \textit{emission function} $f(\bs{r})$, where
+$\bs{r}$ is the two-dimensional vector in the source plane. The emisison
+function has units of fluence rate: (photons / unit time $\cdot$ unit
+area). Thus, the quantity $f(\bs{r})d^2 r$ is the \textit{mean} number of
+photons per unit time emitted into all space from an elemental area $d^2 r$
+located at the point $\bs{r}$. Note that this introduces another assumption that
+the source emits photons isotropically. In fact, bremsstrahlung photons have
+a definite preferred orientation which depends on electron energy, angle of
+electron incidence, and target material.
 
-Wide latitude is important for imaging tasks where there are large difference in
-tissue types. For example a chest image requires that image display lung tissue
-(mostly air) and ribs (bone). Wide latitude is required to image both of these
-simultaneous with good contrast. With a digital detector, since the response to
-x-ray exposure is linear, the display of the image can be manipulated so that
-bone can be displayed properly and then lung tissue; or image processing can be
-used so that both are imaged optimally in a single image.
+\fig{img/solidangle}{0.65}{Diagram for solid-angle calculation.}{solidangle}
 
-e. Resolution In a phosphor screen, x rays are converted to optical photons that
-must travel through the bulk of the screen to escape. For screens that are
-composed of crystals of phosphor in a binder material (turbid screen), the light
-is scattered multiple times as illustrated below and light can be absorbed in
-the screen. The light at the output of the screen is spread over a finite area,
-reducing spatial resolution. The scattering of light in the screen increases
-spatial resolution because it preferentially reduces light photons that travel a
-long distance. Recall that resolution can be characterized by the point spread
-function (psf) and the modulation transfer function (MTF). The image below
-gives a qualitative depiction of how the scattering of light broadens the psf
-and thus reduces the high frequency components of the MTF.
+\subsubsection{The Detector}
 
-The spatial resolution is reduced (more spread of light) as the thickness of the
-screen increases. The further the distance the light needs to travel to exit
-the screen, the broader the psf will be. In many instances a film is sandwiched
-between two thinner screens rather than be used with a single thick screen.
-This can improve the resolution compared to using a single thick screen. It is
-important that the screen and film be in close contact, as any space (poor
-contact) will increase the area over which the light has spread.
-
-In CsI phosphor, the crystals of CsI form long needle shaped structures. These
-“needles” act like an optical fiber reducing the lateral spread of light
-improving the resolution compared to turbid screens of equal thickness.
-
-For direct digital detectors, the spatial resolution can be very high. An
-electric field can be placed across the photoconductor forcing the electrons to
-travel in direction perpendicular to the surface of the detector greatly
-reducing the lateral spread of the electrons.
-
-f. X-ray Quantum Noise
-
-The signal in a screen-film system, the signal is radiographic contrast, as
-given in Eq. [9]. The noise in as screen-film image is $\sigma_D$, and it is
-related to the noise in the x-ray image incident on the detector, $\sigma_E$.
-
-For a uniform exposure, we can average the square of $\Delta D = D(x,y) - \bar{D}$
-over an area in the image to calculate $\sigma_D$:
+Now, let us consider an elemental detector of area $d^2\bs{r}''$, where
+$\bs{r}''$ is the two-dimensional position vector in the detector plane.
+We can calculate the solid angle $d\Omega$ subtended by the elemental
+detector area from the source as:
 \begin{align}
-  \sigma_D^2 = \frac{1}{4XY}\int_{-X}^{X}\int_{-Y}^{Y}\Delta D^2(x,y)dxdy.
+  d\bs{\Omega} = \frac{d^2\bs{r}''\cdot\text{cos}\theta}{R^2},
+  \label{eq:sa}
 \end{align}
-Similar equations can be written in terms of PV and exposure to the detector, $E$. 
-
+where $R$ is the distance from the source element to the detector element and
+$\theta$ is the angle between the normal to the detector surface and the line of
+sight from source to detector, as shown in Figure~\ref{fig:solidangle}. From
+simple geometry, we know that
 \begin{align}
-  \sigma_{\text{PV}}^2 &= \frac{1}{4XY}\int_{-X}^{X}\int_{-Y}^{Y}\Delta \text{PV}^2(x,y)dxdy\\
-    \sigma_{\text{E}}^2 &= \frac{1}{4XY}\int_{-X}^{X}\int_{-Y}^{Y}\Delta \text{E}^2(x,y)dxdy
+  R = (s_1 + s_2) / \text{cos}\theta,
 \end{align}
-Then by Eqs [10] and [11]''
+so we can rewrite Equation~\ref{eq:sa} as
 \begin{align}
-  \Delta D = CG\log_{10}e = G(\log_{10}e)\frac{\Delta E}{\bar{E}},
-\end{align}
-but
-\begin{align}
-  E &= kN \ \text{and}\\
-  \sigma_E^2 &= k^2\sigma_N^2
-\end{align}
-where $N$ is the number of photons, which is $N = A\phi$, where $A$ is the
-cross-sectional area and $\phi$ is the fluence.
-
-Eq. [14] becomes:
-\begin{align}
-  \sigma_D^2 = G^2(\log_{10}^2 e ) \frac{k^2 \sigma_N^2}{k^2\bar{N}^2} = G^2(\log^2_{10}e)\frac{\sigma_N^2}{\bar{N}^2}
+  d\bs{\Omega} = \frac{\text{cos}^3\theta}{(s_1 + s_2)^2}d^2\bs{r}''.
 \end{align}
 
-For Poisson statistics,
+Since a full sphere subtends $4\pi$ steradians, the detector element would
+intercept a fraction $d\bs{\Omega}/4\pi$ of the radiation emitted from
+any source element in the absence of absorbing material in between
+the source and detector planes. In this case, the mean number of
+photons per unit time (1) emitted by the area element $d^2\bs{r}$ in the source
+plane and (2) intercepted by the area element $d^2\bs{r}''$ in the detector
+plane would be
 \begin{align}
-  \sigma_N^2 = \bar{N} = A\bar{\phi} \text{and}
-  \frac{\sigma^2_N}{\bar{N}^2} = \frac{1}{\bar{N}} = \frac{1}{A\bar{\phi}}. 
+  f(\bs{r})d^2\bs{r}\frac{d\bs{\Omega}}{4\pi} = f(\bs{r})\frac{\text{cos}^3\theta}{4\pi(s_1+s_2)^2}d^2\bs{r}d^2\bs{r}''.
 \end{align}
 
-Inserting Eq. [19] into [17] gives:
+For now, we are assuming an ideal, continuous detector that detects all photons
+that intercept it. We will lift this restriction shortly; in general, we will
+see that the detector should be considered an integral part of the imaging
+system.
+
+\subsubsection{The Object Plane}
+
+We now consider the effect of the object. We introduce another restriction
+that we are only dealing with \textit{primary} x-rays; we will discuss the
+effect of scattered radiation later. A ray emanating from point $\bs{r}$ and
+striking the detector at point $\bs{r}''$ will have passed through the object
+plane at point $\bs{r}'$. We define $g(\bs{r}')$ as the transmittance, or the
+fraction of photons that pass through the object plane at point $\bs{r}'$.
+
+We are now in a position to write down an expression for $h(\bs{r}'')$, the
+density of detected photons, such that $h(\bs{r}'')d^2\bs{r}''$ is the mean
+number of photons intercepted by the detector area $d^2\bs{r}''$ in a time T.
+We are not interested in where exactly in the source the photons come from,
+so we integrate over the entire source plane:
 \begin{align}
-  \sigma_D^2 = \frac{G^2(\log^2_{10} e)}{A\bar{\phi}}.
+  h(\bs{r}'')d^2\bs{r}'' = \frac{Td^2\bs{r}''}{4\pi(s_1 + s_2)^2}\int_{\text{source}}d^2\bs{r} \text{ cos}^3\theta f(\bs{r})g(\bs{r}').
+  \label{eq:h1}
+\end{align}
+$h(\bs{r}'')$ has dimensions of fluence (photons per unit area), though
+we refer to $h(\bs{r}'')$ as a \textit{photon density} instead, as that
+term is more appropriate to a static pattern of recorded photons.
+
+Looking closely at the geometry of Figure~\ref{fig:xraymodel}, we
+see that
+\begin{align}
+  \frac{\bs{r}'-\bs{r}}{s_1} = \frac{\bs{r}''-\bs{r}'}{s_2},
+  \label{eq:v1}
+\end{align}
+or, equivalently:
+\begin{align}
+  \bs{r}' = \frac{s_2}{s_1 + s_2}\bs{r} + \frac{s_1}{s_1+s_2}\bs{r}'' = a\bs{r}'' + b\bs{r},
+  \label{eq:v2}
+\end{align}
+where
+\begin{align}
+  a = \frac{s_1}{s_1+s_2} & & b = \frac{s_2}{s_1 + s_2} = 1 - a,
+\end{align}
+and we have eliminated the vector $\bs{r}'$. Note that Equations~\ref{eq:v1}
+and~\ref{eq:v2} describe 2D (not 3D!) vector subtractions in the parallel $(x,y)$
+and $(x',y')$ planes. The 3D distance $R$ would be written
+\begin{align}
+  R = \sqrt{|\bs{r}-\bs{r}''|^2 + (s_1+s_2)^2}.
+\end{align}
+With this simplification, we can rewrite Equation~\ref{eq:h1} without the use of $\bs{r}'$ as
+\begin{align}
+  h(\bs{r}'')d^2\bs{r}'' = Cd^2\bs{r}''\int_{\text{source}}d^2\bs{r} \text{ cos}^3\theta f(\bs{r})g(a\bs{r}'' + b\bs{r}),
+\end{align}
+where
+\begin{align}
+  C = \frac{T}{4\pi(s_1+s_2)^2}.
+\end{align}
+We are generally interested in systems where $s_1 + s_2$ is large compared to $|\bs{r}|$ or $|\bs{r}''|$. We
+can thus make the approximation $\theta \approx 0$ and $\text{cos}^3\theta \approx 1$. Dropping the
+$d^2\bs{r}''$ factor from both sides, this leaves us with our final model for the density of detected
+photons:
+\begin{align}
+  h(\bs{r}'') \approx C\int_{source}d^2 \bs{r} f(\bs{r})g(a\bs{r}'' + b\bs{r}).
+  \label{eq:hfinal}
 \end{align}
 
-For a digital system, $\text{PV} = GE$ and therefore
+It is important to keep track of the various assumptions we used to build this model.
+To summarize, we assume:
+\begin{itemize}
+\item we have a 2D, planar, isotropic source that is far from the detector plane ($\theta\approx 0$)
+\item we have a 2D planar object that does not introduce scattered radiation
+\item we have an ideal detector that perfectly detects every photon it encounters
+\end{itemize}
+
+\subsubsection{Reduction to a Convolution}
+
+Equation~\ref{eq:hfinal} is starting to resemble a convolution integral. To exploit this
+resemblance, we define a new variable $\bs{r}_0''$, given by
 \begin{align}
-  \Delta\text{PV} = G\Delta E. 
+  \bs{r}_0'' = \frac{s_2}{s_1}\bs{r} = -\frac{b}{a}\bs{r}.
 \end{align}
-Now using Eqs. [13] and [20]
+Multiplication of $\bs{r}$ by $-b/a$ is equivalent to projecting it through a
+point in the object plane to the image plane, as illustrated in Figure~\ref{fig:r0}.
+
+\fig{img/r0}{0.5}{Illustration of $\bs{r}_0''$.}{r0}
+
+We can use $\bs{r}_0''$ to define scaled versions of $f$ (the source emittance)
+and $g$ (the object transmittance).  We define these scaled functions as
+$\tilde{f}$ and $\tilde{g}$, respectively:
 \begin{align}
-  \sigma_{PV}^2 = G^2\sigma_E^2.
+  \tilde{f}(\bs{r}_0'') &= f(\bs{r}) = f\left(-\frac{a}{b}\bs{r}_0''\right)\\
+  \tilde{g}(\bs{r}_0'') &= g(a\bs{r}_0'').
 \end{align}
-Using Eqs [16], [17], [18] and [21]
+
+The tilde thus indicates \textit{projection of the initial functions onto the image plane}. We
+can rewrite $g$ in terms of these new variables: 
 \begin{align}
-  \sigma_{\text{PV}}^2 = G^2k^2\sigma_N^2 = G^2k^2A\bar{\phi}
+  g(a\bs{r}'' + b\bs{r}) = g(a\bs{r}''-a\bs{r}_0'') = \tilde{g}(\bs{r}'' - \bs{r}_0''),
 \end{align}
-
-Note $\sigma_D^2 \propto \frac{1}{\bar{\phi}}$, but $\sigma_{\text{PV}}^2 \propto \bar{\phi}$.
-
-Note in real imaging systems, there are other noise sources. In particular, in
-a screen-film system there is noise due the finite size and number of the silver
-grains in the developed film; and in a digital system there is electronic noise
-from the device that captures the light (indirect detectors) or the electrons
-(direct detectors). These are usually small compared to quantum noise, at low
-spatial frequencies. More about this in the lecture on noise.
-
-SNR (ignoring image blurring and considering only x-ray quantum noise)
-
-For screen-film systesms, using Eqs. [10] and [19]
+which leads to a final form for $h(\bs{r}'')$:
 \begin{align}
-  \text{SNR}_{\text{film}} = \frac{\Delta D}{\sigma_D} = \frac{GC(\log_{10}e)}{\sqrt{\frac{G^2(\log_{10}^2e)}{A\bar{\phi}}}} = C\sqrt{A\bar{\phi}},
+  h(\bs{r}'')&=\left(\frac{a}{b}\right)^2 C \int_{\infty} d^2\bs{r}_0'' \tilde{f}(\bs{r}_0'')\tilde{g}(\bs{r}'' - \bs{r}_0'')\nonumber\\
+             &=\left(\frac{a}{b}\right)^2 C \tilde{f}(\bs{r}'') \ast \ast \text{ } \tilde{g}(\bs{r}'')
 \end{align}
-which is the same as Eq. [3]. 
-
-For a digital system, using Eqs. [15], [20] and [22]
+where the $\infty$ subscript in the integral indicates integration over the
+entire 2D detector plane. We have thus achieved our goal and described the
+detected photon density as the output of a 2D linear system with input
+$\tilde{f}$ and kernel proportional to $\tilde{g}$ (or equivalently, an input
+$\tilde{g}$ and kernel proportional to $\tilde{f}$). As with any linear system, a
+frequency-domain description is very useful:
 \begin{align}
-  \text{SNR}_{\text{digital}} = \frac{\Delta \text{PV}}{\sigma_{PV}} = \frac{G\Delta E}{\sqrt{G^2 k^2 A\phi}} = \frac{k\Delta N}{\sqrt{k^2 A\phi}} = \frac{A\Delta \phi}{\sqrt{A\phi}} = C\sqrt{A\bar{\phi}},
+  \mathscr{F}_2\left\{h(\bs{r}'')\right\} = H(\bs{\rho}'') = (a/b)^2 C \tilde{F}(\bs{\rho}'')\tilde{G}(\bs{\rho}),
+  \label{eq:ft1}
 \end{align}
-which is again Eq. [3].
+where $\bs{\rho}''$ is the spatial frequency vector conjugate to $\bs{r}''$ in the image plane.
+Recall the scaling relation for an nD Fourier transform:
+\begin{align}
+  \mathscr{F}_N\left\{f(\bs{r}/b)\right\} = |b|^N F(b\bs{\rho}).
+\end{align}
+We can use this to evaluate the right side of Equation~\ref{eq:ft1} in terms of the
+original source and transmission functions $f$ and $g$:
+\begin{align}
+  \tilde{F}(\bs{\rho}'') &= \mathscr{F}_2\left\{f(-a\bs{r}''/b)\right\} = (b/a)^2 F(-b\bs{\rho}''/a)\\
+  \tilde{G}(\bs{\rho}'') &= \mathscr{F}_2\left\{g(a\bs{r}'')\right\} = (1/a)^2 G(\bs{\rho}''/a).
+\end{align}
+Our final result is then
+\begin{align}
+  H(\bs{\rho}'') = (C/a^2)F(-b\bs{\rho}''/a)G(\bs{\rho}''/a).
+  \label{eq:ft2}
+\end{align}
 
-Non-ideal Detectors
+Recall that the double-primed coordinate represent the frequency vector
+in the image plane. We can also express Equation~\ref{eq:ft2} in the
+object ($\bs{\rho}'$) and source ($\bs{\rho}$) planes:
+\begin{align}
+  H(a\bs{\rho}') &= (C/a^2)F(-b\bs{\rho}')G(\bs{\rho}')\\
+  H(-a\bs{\rho}/b) &= (C/a^2)F(\bs{\rho})G(-\bs{\rho}/b).
+\end{align}
 
-Assume the imaging system is linear or linearizable. Further assume $w_{in}(u)$
-is the input stimulus where $u$ is an independent variable and $w_{out}(u)$ is
-the output response of the system. If there are two inputs, which produce two
-outputs, that is: $w'_{out}(u) = w'_{in}(u)$ and $w''_{out}(u) = w''in(u)$, the
-system is said to be linear if, when both inputs are applied together, $w_{in}(u) =
-w'in(u) + w''in(u)$, the output is given by: $wout(u) = w'out(u) + w''out(u)$.
+\subsubsection{Effect of focal spot}
 
-For a real (non-ideal) imaging system, the input maybe localized to a location
-$u_0$, the response at the output is spread over a range of $u$ centered on
-$u0$. Conversely, any point at the output will depend on input stimuli over a
-range of positions at the input, that is:
-\begin{align*}
-  w_{out}(u) = \int_{-\infty}^{\infty} p(u, u') w_{\text{in}}(u')du'
-\end{align*}
-Let $w_{\text{in}}(u) = \delta(u - u_0)$. 
+The perhaps non-intuitive result of this analysis is that the x-ray source plays
+such an important role in the imaging chain. We have shown that the detected
+image can be modeled as a convolution of the object with the x-ray source -- the
+source is thus always ``in'' the image, in a certain sense. We would like to
+characterize this effect in more detail.
 
+We can model the x-ray source as a ``focal spot,'' a uniform, emissive disk of
+diameter $d_{fs}$, so the emission function is
+\begin{align}
+  f(\bs{r}) = f_0 \text{ circ}\left(\frac{2r}{d_{fs}}\right),
+  \label{eq:fsdef}
+\end{align}
+where $f_0$ is the emission density (photons per unit area per unit time) within
+the disk region (see Figure \ref{fig:fs}). Recall that the ``circ'' function is
+defined as:
+\begin{align}
+  \text{circ}(r) =
+  \begin{cases}
+    1 & r \le 1\\
+    0 & \text{else}
+  \end{cases}.
+\end{align}
 
-Therefore,
+\fig{img/focal_spot}{0.75}{Diagram illustrating the calculation of the point
+  spread function for transmission radiography with a disklike focal spot.}{fs}
+
+To find the PSF of the system, we consider a point
+object input described by
+\begin{align}
+  g(\bs{r}') = \delta(\bs{r}'-\bs{r}_1'),
+  \label{eq:pinhole}
+\end{align}
+where $\bs{r}_1'$ is the location of the point in the object plane. The notion
+of a ``point'' transmission might seem counterintuitive -- we are describing a
+hypothetical object that becomes ``infinitely transmissive'' over an
+infinitesimal area. You might consider a pinhole aperture with area
+approaching zero while the exposure time is increased proportionally.
+
+The PSF is just the image of a point source measured in the detector plane --
+i.e., the pinhole image of the focal spot. Substituting Equations~\ref{eq:fsdef}
+and~\ref{eq:pinhole} into~\ref{eq:hfinal}, we find
+\begin{align}
+  h(\bs{r}'') &= C \int_{source} d^2\bs{r} f_0 \text{ circ} \left(\frac{2r}{d_{fs}}\right)\delta(a\bs{r}'' + b\bs{r}-\bs{r}')\nonumber\\[6pt]
+              &= \left(\frac{C}{b^2}\right) f_0 \text{ circ}\left[\frac{2|a\bs{r}'' - \bs{r}_1'|}{bd_{fs}}\right]\nonumber\\[6pt]
+              &= \left(\frac{C}{b^2}\right) f_0 \text{ circ}\left[\frac{2|\bs{r}''-(\bs{r}_1'/a)|}{b d_{fs} / a}\right],
+\end{align}
+where we have made use of the sifting property of delta functions. This equation
+describes a uniform disk image of diameter $d_{fs}''$, given by
+\begin{align}
+  d_{fs}'' = \frac{b}{a}d_{fs} = \frac{s_2}{s_1}d_{fs}.
+\end{align}
+The disk is centered at $\bs{r}'' = \bs{r}_1'/a = \bs{r}_1'(s_1 + s_2)/s_1$, the
+magnification $m_t$ is therefore $(s_1 + s_2)/s_1$. Note that $m_t$ is always a positive number greater than 1.
+
+To completely specify the PSF we must also include the effects of the image
+detector, which we have so far neglected. An ideal detector would produce output
+directly proportional to $h(\bs{r''})$. Real detectors, however, further degrade
+the image and must be treated as independent linear systems. Cascaded linear
+systems are easiest to deal with in the frequency domain, so we consider the
+input of the \textit{detector} system to be $H(\bs{\rho}'')$, the
+Fourier transform of $h(\bs{r}'')$. We denote the transfer function of
+the detector as $D(\bs{\rho}'')$, so the detector output is just
+$D(\bs{\rho}'')H(\bs{\rho}'')$. Using Equation \ref{eq:ft2}, we can write this
+as
+\begin{align}
+  D(\bs{\rho}'')H(\bs{\rho}'') = (C/a^2)D(\bs{\rho}'')F(-b\bs{\rho}''/a)G(\bs{\rho}''/a).
+\end{align}
+
+This describes the transfer of spatial frequencies $G(\bs{\rho}''/a)$, the
+object function scaled into the detector plane. We are \textit{actually}
+interested in how the spatial frequencies of the object in the \textit{object
+  plane} (i.e., with no scaling) are affected by the system, so we let
+$\bs{\rho}' = \bs{\rho}''/a$ and rewrite our result as
+\begin{align}
+  D(a\bs{\rho}')H(a\bs{\rho}') = (C/a^2)D(a\bs{\rho}')F(-b\bs{\rho}')G(\bs{\rho}').
+\end{align}
+Note that $G(\bs{\rho}')$ now appears on the right side with no scaling. The
+overall transfer function of the system for spatial frequencies in the object
+plane is thus given by
+\begin{align}
+  TF_{tot}(\bs{\rho}') = P_{tot}(\bs{\rho}') = (C/a^2)D(a\bs{\rho}')F(-b\bs{\rho}'),
+  \label{eq:TFtot}
+\end{align}
+which we can write in the spatial domain as
+\begin{align}
+  \text{PSF}_{tot}(\bs{r}') &= p_{tot}(\bs{r}') = (C/a^2)\mathscr{F}_2^{-1}\left\{D(a\bs{\rho}')F(-b\bs{\rho}')\right\}\\
+                               &= p_{fs}(\bs{r}') \ast \ast \text{ }p_{det}(\bs{r}'),
+\end{align}
+where $p_{fs}(\bs{r}')$ is the PSF due to the focal spot alone:
+\begin{align}
+  p_{fs}(\bs{r}') = (C/a^2)\mathscr{F}_2^{-1}\left\{F(-b\bs{\rho})\right\} = \left(\frac{C}{a^2b^2}\right)f\left(-\bs{r}'/b\right),
+  \label{eq:psffs}
+\end{align}
+and $p_{det}(\bs{r}')$ is the PSF due to the detector:
+\begin{align}
+  p_{det}(\bs{r}') = \mathscr{F}_2^{-1}\left\{D(a\bs{\rho}')\right\} = (1/a^2)d\left(\bs{r}'/a\right).
+  \label{eq:psfdet}
+\end{align}
+
+\subsubsection{Design Considerations}
+
+We can now discuss how to use our results from the linear systems
+model to optimize our imaging system design. Specifically, we see
+that there is an optimum magnification even if there is no limitation
+imposed by the finite detector size. Recall that the magnification is
+given by
+\begin{align}
+  m_t = \frac{s_1+s_2}{s_1} = \frac{1}{a} = \frac{1}{1-b}.
+  \label{eq:mag1}
+\end{align}
+Equivalently, we see that
+\begin{align}
+  b = 1 - \frac{1}{m_t} = \frac{m_t - 1}{m_t}.
+  \label{eq:mag2}
+\end{align}
+Applying these results to Equations~\ref{eq:psffs} and~\ref{eq:psfdet},
+we see that
+\begin{align}
+  p_{fs}(\bs{r}') &\propto f\left(\frac{-m_t\bs{r}'}{m_t - 1}\right)\label{eq:psffsmag}\\
+  p_{det}(\bs{r}') &\propto d(m_t\bs{r}')\label{eq:psfdetmag}
+\end{align}
+The width of $p_{fs}(\bs{r}')$ is smallest when the coefficient of $\bs{r}'$ of
+Equation~\ref{eq:psffsmag} is the largest, which occurs when $m_t = 1$. Blurring
+from the focal spot is thus minimized for ``contact'' imaging ($s_2 = 0$), when
+the detector is in direct contact with the object being imaged, and there is no
+magnification. We see from Equation~\ref{eq:psfdetmag}, however, that a large
+magnification is needed to minimize blurring from the detector.
+
+To optimize the choice of magnification, then, we can model the PSFs from the
+focal spot and detector as Gaussians. Recall that the Fourier transform of a
+Gaussian function is another Gaussian function. In the frequency domain then, we
+will assume that
+\begin{align}
+  D(\bs{\rho}'') &\propto \text{exp}\left[-\pi\left(\bs{\rho}''/\rho_d''\right)^2\right]\\
+  F(\bs{\rho}) &\propto \text{exp}\left[-\pi\left(\bs{\rho}/\rho_f\right)^2\right],
+\end{align}
+where $\rho_d''$ and $\rho_f$ are characteristic widths of the MTF of the detector and
+focal spot, respectively. We find the overall MTF from Equation~\ref{eq:TFtot},
+\begin{align}
+  \text{MTF}_{tot} = \frac{|P_{tot}(\bs{\rho}')|}{P_{tot}(0)} \propto \text{exp}\left[-\pi(a\bs{\rho}'/\rho_d'')^2\right]\text{exp}\left[-\pi(b\bs{\rho}'/\rho_f'')^2\right].
+\end{align}
+From Equations~\ref{eq:mag1} and~\ref{eq:mag2}, this can be written as
+\begin{align}
+  \text{MTF}_{tot} = \text{exp}\left[-\pi\bs{\rho}'\left(\frac{1}{(m_t \rho_d'')^2} + \frac{(m_t-1)^2}{(m_t\rho_f)^2}\right)\right].
+\end{align}
+The width of MTF$_{tot}$ will be an extremum if
+\begin{align}
+  \frac{d}{d m_t}\left[\frac{1}{(m_t \rho_d'')^2} + \frac{(m_t-1)^2}{(m_t\rho_f)^2}\right] = 0,
+\end{align}
+which has the solution
+\begin{align}
+  m_t^{opt} = 1 + \left(\frac{p_f}{p_d}\right)^2.
+  \label{eq:magopt}
+\end{align}
+
+We are interested in two limits of Equation~\ref{eq:magopt}. If we have a very
+large focal spot ($\rho_f \to 0$), then $m_t^{opt} = 1$, which, as we have already
+discussed, indicates contact imaging. On the other hand, if our detector is very
+poor ($\rho_d'' \to 0$), we require a large magnification. In other words, we can
+tolerate having a large focal spot by performing contact imaging, at the cost of
+having no magnification. This is generally what occurs, as the focal spot is
+often a more dominant contribution to the system PSF than the detector.
+
+Note: this discussion on linear systems theory was adapted from Chapter 4 in
+Barrett~\cite{barrett}. Please read through the rest of that chapter for a more
+detailed analysis and insight into further design considerations. 
 
 
 \subsection{Characterizing An X-ray Imaging System}

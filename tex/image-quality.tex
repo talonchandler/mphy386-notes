@@ -13,14 +13,55 @@ useful for analyzing all imaging modalities.
 \subsubsection{Stationarity}
 \subsubsection{Ergodicity}
 \subsubsection{Ensemble average}
+
 \subsection{Resolution}
 \subsubsection{Signal transfer / linear system model}
+
 \subsection{Noise}
 \subsubsection{Noise transfer (autocorrelation, NPS)}
+
 \subsection{Contrast}
 \subsubsection{Rose Model}
+
 \subsection{The effect of Scatter}
+
+INTRODUCTION, so far we have neglected scatter, etc.
+
 \subsubsection{Resolution: Scatter psf}
+
+Linear systems analysis
+
+\begin{align}
+  \text{PSF}_{total} (\vec{r}) = \text{PSF}_{primary}(\vec{r}) + \text{PSF}_{scatter}(\vec{r})
+\end{align}
+
+Modeling of Scatter PSF
+
+\begin{align}
+  \text{PSF}_{scatter}(\vec{r}) = \int_0^L dz\left[\Phi_0 e^{-\mu(L-z)}\right]\left[\frac{r_0^2}{2}\left(1 + \text{cos}^2\theta\right)\right]\left[n_e A\right]\left[\frac{\text{cos}^3\theta}{(s+z)^2}\right]\left[e^{-\mu z\text{sec}\theta}\right]
+\end{align}
+
+\begin{align}
+  \text{PSF}_{primary}(\vec{r}) = \Phi_0 e^{-\mu L}
+\end{align}
+
+Modeling Scatter as Gaussian
+
+\begin{align}
+  \text{PSF}_{scatter}(\vec{r}) = A_s T e^{-\pi \beta_s^2 r^2} & & \text{P}_{scatter}(\vec{\rho}) = \frac{A_s T}{\beta_s^2}e^{-\pi \rho^2 / \beta_s^2}\\
+  \text{PSF}_{primary}(\vec{r}) = A_p T e^{-\pi \beta_p^2 r^2} & & \text{P}_{primary}(\vec{\rho}) = \frac{A_p T}{\beta_p^2}e^{-\pi \rho^2 / \beta_p^2}
+\end{align}
+
+\begin{align}
+  \text{MTF}_{total} &= \frac{\text{P}_{primary}(\vec{\rho}) + \text{P}_{scatter}(\vec{\rho})}{\text{PSF}_{primary}(0) + \text{PSF}_{scatter}(0)}\\
+  &= \frac{e^{-\pi\rho^2/\beta_p^2} + \text{SPR}e^{-\pi\rho^2/\beta_s^2}}{1 + \text{SPR}}
+\end{align}
+
+Important results
+\begin{align}
+  \frac{\text{P}_{total}(\vec{\rho})}{\text{P}_{primary}(\vec{\rho})} \approx \frac{1}{1 + \text{SPR}} & & \beta_s << \vec{\rho} << \beta_p
+\end{align}
+
 \subsubsection{Contrast: Rose Model}
 
 \fig{img/scatter.png}{1.0}{Left: Radiograph of the skull with contrast. Right:
@@ -77,6 +118,8 @@ using the scatter fraction:
 and scatter-to-primary ratio, $S/P$. 
 
 \subsubsection{Anti-scatter grids}
+
+\fig{img/antiscattergrid}{0.6}{Anti-scatter grid basics.}{fig:antiscatter}
 
 \pagebreak
 \end{document}

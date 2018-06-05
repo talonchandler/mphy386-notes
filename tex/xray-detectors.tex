@@ -1,11 +1,42 @@
 \documentclass[mphy386-notes.tex]{subfiles}
 \begin{document}
 \section{X-ray Detectors}
-\subsection{Ideal Detector}
-\subsection{Detector Metrics}
+An ideal x-ray detector provides an unbiased estimate of the location, energy,
+and time of arrival of every incident photon at any rate of arrival. Throughout
+this section we will look closer at these requirements and see how real x-ray
+detectors fail to be ideal.
+
+\subsection{Quantum efficiency}
+The first task of any x-ray detector is to absorb all incident x-rays. We call
+the fraction of incident x-rays that interact in the detector the
+\textbf{quantum efficiency}, denoted by $\eta$. The quantum efficiency is
+related to the linear attenuation coefficient of the x-ray detector, $\mu$, and
+the thickness of the detector $t$ by
+\begin{align}
+  \eta = 1 - e^{-\mu t}. 
+\end{align}
+An ideal detector will stop all x-rays, so we would like $\mu t$ to be as large
+as possible. Therefore, an x-ray detector should be thick and made of a material
+with high atomic number. If the quantum detection efficiency is less than one,
+then the detector's SNR will be reduced by a factor of $\sqrt{\eta}$ and Eq.
+\ref{eq:snrcontrast} becomes
+\begin{align}
+  \text{SNR} = C\sqrt{\eta A\bar{\phi}} \label{eq:rosesnr}.
+\end{align}
+Recall from the Rose model that we need an SNR of approximately 5 to detect a
+signal. This means that reducing the quantum efficiency will require us to
+increase the incident x-ray fluence to maintain a fixed SNR. Increasing the
+photon fluence will increase the dose to the patient, so quantum efficiency is
+an important metric for x-ray detectors.
+
 \subsubsection{SNR}
 \subsubsection{DQE}
 \subsubsection{NEQ}
+% These show up in the slides here, but not all of the concepts are developed
+% at this point. Wait until the image quality section?
+
+% I'm getting lost following Yulei's slides here. 
+
 \subsection{Analog Detectors}
 \subsubsection{Film structure}
 \subsubsection{Optical density / H\&D Curve}
@@ -19,35 +50,7 @@
 \subsection{Digital Detectors}
 \subsubsection{Intro}
 \subsubsection{DQE}
-\subsection{Comparison}
-\subsubsection{Detectors}
-An ideal x-ray detector converts an x-ray image into a visible image without
-altering it. In this section we will review the major types of x-ray detectors
-and examine how they fail to be ideal.
-
-The first task of any x-ray detector is to absorb all incident x-rays---a
-detector should not let any x-rays pass through. The fraction of incident x-rays
-that interact in the detector, $\eta$, is called the quantum detection
-efficiency. The quantum detection efficiency is related to the linear
-attenuation coefficient of the x-ray detector, $\mu$, and the thickness of the detector $t$ by
-\begin{align}
-  \eta = 1 - e^{-\mu t}. 
-\end{align}
-An ideal detector will stop all x-rays, so we would like $\mu t$ to be as large
-as possible. Therefore, an x-ray detector should be thick and made of a material
-with high atomic number and high physical density. If the quantum detection
-efficiency is less than one, then the detector's SNR will be reduced by
-$\sqrt{\eta}$ and Eq. XXX becomes
-\begin{align}
-  \text{SNR} = C\sqrt{\eta A\bar{\phi}}.
-\end{align}
-Recall from the Rose model that we need to an SNR of approximately 5 to detect a
-signal on a background. This means that reducing the quantum efficiency will
-require us to increase the incident x-ray fluence to maintain a fixed SNR.
-Increasing the photon fluence will increase the dose to the patient, so clearly
-quantum efficiency is an important consideration for all detectors.
-
-\subsubsection*{Analog Detectors}
+\subsection{Analog Detectors}
 Analog images are acquired and displayed on film. Film consists of a plastic
 base coated with a gelatin binder that contains light-sensitive silver halide
 crystals. Figures \ref{fig:film} and \ref{fig:sem} show schematic and scanning
@@ -161,7 +164,7 @@ often referred to as \textit{reciprocity law failure} or the
 \textit{Schwarzschild effect} after Schwarzchild noticed the issue while imaging
 dim stars.
 
-\subsubsection*{Digital Detectors}
+\subsection{Digital Detectors}
 We will briefly discuss several types of digital detectors and leave the details
 for Patrick's lectures. The defining feature of a digital detector is that its
 output is a digital signal with discrete values. Digital images are usually
@@ -197,247 +200,250 @@ to the valence band with the emission of light. The emitted light is collected
 to create a digital image. These detectors use the same principle as optically
 stimulated luminescent dosimeters (OSLD) in radiation dosimetry.
 
-\subsubsection{*Comparison of Analog and Digital Detectors} 
+% Everything here is straight from Yulei's notes I'm not completely sure where
+% these will (should?) fit in with the lecture.
 
-Contrast
+% \subsubsection{*Comparison of Analog and Digital Detectors} 
 
-Speed
+% Contrast
 
-Latitude
+% Speed
 
-Resolution
+% Latitude
 
-Noise
+% Resolution
 
-SNR
+% Noise
 
-The contrast in the image incident on the detector is given (ignoring any
-scattered radiation) by the radiation contrast, Eq. [4]. We want to
-know the radiographic contrast --- the contrast in the final image. To determine
-this, we need to know how the x-ray exposure incident on the detector is converted
-to a visible image. This relationship between the input exposure and the output
-image is given by the characteristic curve.
+% SNR
 
-b. Characteristic Curve
+% The contrast in the image incident on the detector is given (ignoring any
+% scattered radiation) by the radiation contrast, Eq. [4]. We want to
+% know the radiographic contrast --- the contrast in the final image. To determine
+% this, we need to know how the x-ray exposure incident on the detector is converted
+% to a visible image. This relationship between the input exposure and the output
+% image is given by the characteristic curve.
 
-Gives the relationship between the detector output and the exposure to the
-detector. For a digital detector the characteristic curve is linear. That is,
-\begin{align}
-  \text{PV} = GE
-\end{align}
-where PV is the pixel value in the image, G is the slope of the
-characteristic curve and E is the incident exposure. Further:  % isn't exposure usually 'X'?
-\begin{align}
-  \frac{\Delta E}{\bar{E}} = \frac{\Delta \text{PV}}{\bar{\text{PV}}} = C.
-\end{align}
+% b. Characteristic Curve
 
-That is, for a digital detector, the radiographic contrast is equal to the
-radiation contrast and this is true for all exposure values. It is independent
-of the slope of the characteristic curve.
+% Gives the relationship between the detector output and the exposure to the
+% detector. For a digital detector the characteristic curve is linear. That is,
+% \begin{align}
+%   \text{PV} = GE
+% \end{align}
+% where PV is the pixel value in the image, G is the slope of the
+% characteristic curve and E is the incident exposure. Further:  % isn't exposure usually 'X'?
+% \begin{align}
+%   \frac{\Delta E}{\bar{E}} = \frac{\Delta \text{PV}}{\bar{\text{PV}}} = C.
+% \end{align}
 
-% For screen-film systems, the characteristic curve is called the H\&D curve, named after Hurter and Driffield, and it is a plot OD versus log relative exposure to the screen.
+% That is, for a digital detector, the radiographic contrast is equal to the
+% radiation contrast and this is true for all exposure values. It is independent
+% of the slope of the characteristic curve.
 
-% For screen-film systems, the response is non-linear and there is a toe, a
-% shoulder region, and a linear region in between. Base+fog is the minimum OD due
-% to the transparency of the film base and any darkening of the film due to
-% thermal effects. The net OD is the gross OD minus the base+fog level.
+% % For screen-film systems, the characteristic curve is called the H\&D curve, named after Hurter and Driffield, and it is a plot OD versus log relative exposure to the screen.
 
-The characteristic curve for a screen-film system depends on the properties of the
-screen-film system and the film processing (developer) conditions.
+% % For screen-film systems, the response is non-linear and there is a toe, a
+% % shoulder region, and a linear region in between. Base+fog is the minimum OD due
+% % to the transparency of the film base and any darkening of the film due to
+% % thermal effects. The net OD is the gross OD minus the base+fog level.
 
-For a screen-film system, the radiographic contrast is given by the difference in
-optical density, D. It depends on the radiation contrast and the slope of the
-H\&D curve, called gamma (G). Radiographic contrast in a screen-film image is
-given by:
-\begin{align}
-  G &= \frac{\Delta D}{\Delta(\ln E)}\\
-  \Delta D = G(\log_{10}e)\Delta(\ln E) &= G(\log_{10}e)\frac{\Delta E}{\bar{E}} = CG\log_{10}e, 
-\end{align}
-since $\phi = kE$, then $\frac{\Delta E}{\bar{E}} = \frac{\Delta \phi}{\bar{\phi}} = C =$ radiation contrast.
+% The characteristic curve for a screen-film system depends on the properties of the
+% screen-film system and the film processing (developer) conditions.
 
-Since the characteristic curve is not linear, the exposure to the detector is
-very important. The image can be properly exposed, but also under or over
-exposed, where the radiographic contrast will be low (because G is low).  For
-digital system, this is not a problem (at least in terms of contrast) as
-illustrated below.
+% For a screen-film system, the radiographic contrast is given by the difference in
+% optical density, D. It depends on the radiation contrast and the slope of the
+% H\&D curve, called gamma (G). Radiographic contrast in a screen-film image is
+% given by:
+% \begin{align}
+%   G &= \frac{\Delta D}{\Delta(\ln E)}\\
+%   \Delta D = G(\log_{10}e)\Delta(\ln E) &= G(\log_{10}e)\frac{\Delta E}{\bar{E}} = CG\log_{10}e, 
+% \end{align}
+% since $\phi = kE$, then $\frac{\Delta E}{\bar{E}} = \frac{\Delta \phi}{\bar{\phi}} = C =$ radiation contrast.
 
-Effect of characteristic curve shape.  Top is for screen-film, which have a
-non-linear response. Bottom is for a digital system with a linear response.
-This figure only illustrates the effect on radiographic contrast and not noise
-nor SNR.
+% Since the characteristic curve is not linear, the exposure to the detector is
+% very important. The image can be properly exposed, but also under or over
+% exposed, where the radiographic contrast will be low (because G is low).  For
+% digital system, this is not a problem (at least in terms of contrast) as
+% illustrated below.
 
-c. Speed 
+% Effect of characteristic curve shape.  Top is for screen-film, which have a
+% non-linear response. Bottom is for a digital system with a linear response.
+% This figure only illustrates the effect on radiographic contrast and not noise
+% nor SNR.
 
-Speed is defined as the reciprocal of the exposure required to reach a net OD of
-1.0. The speed point is considered the exposure to give a properly exposed
-image. A fast system has high speed and slow system has low speed.  Screen-film
-systems have an optimum exposure that must be used in order to produce a useful
-image.
+% c. Speed 
 
-Factors Affecting Speed
-1.  X-ray absorption by the screen
-- phosphor type (atomic number, k-edge energy)
-- thickness and packing density
-- x-ray energy
-- crystal size
-2.  Conversion Efficiency of Screen (fraction of x-ray energy converted in optical energy)
-- physical properties of phosphor
-- optical properties of screen
-- concentration of activator atoms
-- x-ray energy
-3.  Film Sensitivity
-- silver content
-- sensitizers
-- film gain size, structure, etc.
-4.  Matching of light emission of the screen to the spectral sensitivity of the film
-5.  Film processing
+% Speed is defined as the reciprocal of the exposure required to reach a net OD of
+% 1.0. The speed point is considered the exposure to give a properly exposed
+% image. A fast system has high speed and slow system has low speed.  Screen-film
+% systems have an optimum exposure that must be used in order to produce a useful
+% image.
 
-d.	Latitude
+% Factors Affecting Speed
+% 1.  X-ray absorption by the screen
+% - phosphor type (atomic number, k-edge energy)
+% - thickness and packing density
+% - x-ray energy
+% - crystal size
+% 2.  Conversion Efficiency of Screen (fraction of x-ray energy converted in optical energy)
+% - physical properties of phosphor
+% - optical properties of screen
+% - concentration of activator atoms
+% - x-ray energy
+% 3.  Film Sensitivity
+% - silver content
+% - sensitizers
+% - film gain size, structure, etc.
+% 4.  Matching of light emission of the screen to the spectral sensitivity of the film
+% 5.  Film processing
 
-For screen-film systems, since the curve is non-linear, the system has limited
-latitude. Latitude refers to the range in exposure that will produce density
-within the accepted range for diagnostic radiology (usually considered to be
-0.25 to 2.0). Latitude does not apply to digital systems. For screen-film
-systems, there is a tradeoff in latitude and contrast. Generally speaking,
-systems with high contrast (large G) have limited latitude and vice versa.
+% d.	Latitude
 
-For the image on the right, System A has higher speed and wider latitude than
-System B. System B has higher contrast, but limited latitude.
+% For screen-film systems, since the curve is non-linear, the system has limited
+% latitude. Latitude refers to the range in exposure that will produce density
+% within the accepted range for diagnostic radiology (usually considered to be
+% 0.25 to 2.0). Latitude does not apply to digital systems. For screen-film
+% systems, there is a tradeoff in latitude and contrast. Generally speaking,
+% systems with high contrast (large G) have limited latitude and vice versa.
 
-Wide latitude is important for imaging tasks where there are large difference in
-tissue types. For example a chest image requires that image display lung tissue
-(mostly air) and ribs (bone). Wide latitude is required to image both of these
-simultaneous with good contrast. With a digital detector, since the response to
-x-ray exposure is linear, the display of the image can be manipulated so that
-bone can be displayed properly and then lung tissue; or image processing can be
-used so that both are imaged optimally in a single image.
+% For the image on the right, System A has higher speed and wider latitude than
+% System B. System B has higher contrast, but limited latitude.
 
-e. Resolution In a phosphor screen, x rays are converted to optical photons that
-must travel through the bulk of the screen to escape. For screens that are
-composed of crystals of phosphor in a binder material (turbid screen), the light
-is scattered multiple times as illustrated below and light can be absorbed in
-the screen. The light at the output of the screen is spread over a finite area,
-reducing spatial resolution. The scattering of light in the screen increases
-spatial resolution because it preferentially reduces light photons that travel a
-long distance. Recall that resolution can be characterized by the point spread
-function (psf) and the modulation transfer function (MTF). The image below
-gives a qualitative depiction of how the scattering of light broadens the psf
-and thus reduces the high frequency components of the MTF.
+% Wide latitude is important for imaging tasks where there are large difference in
+% tissue types. For example a chest image requires that image display lung tissue
+% (mostly air) and ribs (bone). Wide latitude is required to image both of these
+% simultaneous with good contrast. With a digital detector, since the response to
+% x-ray exposure is linear, the display of the image can be manipulated so that
+% bone can be displayed properly and then lung tissue; or image processing can be
+% used so that both are imaged optimally in a single image.
 
-The spatial resolution is reduced (more spread of light) as the thickness of the
-screen increases. The further the distance the light needs to travel to exit
-the screen, the broader the psf will be. In many instances a film is sandwiched
-between two thinner screens rather than be used with a single thick screen.
-This can improve the resolution compared to using a single thick screen. It is
-important that the screen and film be in close contact, as any space (poor
-contact) will increase the area over which the light has spread.
+% e. Resolution In a phosphor screen, x rays are converted to optical photons that
+% must travel through the bulk of the screen to escape. For screens that are
+% composed of crystals of phosphor in a binder material (turbid screen), the light
+% is scattered multiple times as illustrated below and light can be absorbed in
+% the screen. The light at the output of the screen is spread over a finite area,
+% reducing spatial resolution. The scattering of light in the screen increases
+% spatial resolution because it preferentially reduces light photons that travel a
+% long distance. Recall that resolution can be characterized by the point spread
+% function (psf) and the modulation transfer function (MTF). The image below
+% gives a qualitative depiction of how the scattering of light broadens the psf
+% and thus reduces the high frequency components of the MTF.
 
-In CsI phosphor, the crystals of CsI form long needle shaped structures. These
-“needles” act like an optical fiber reducing the lateral spread of light
-improving the resolution compared to turbid screens of equal thickness.
+% The spatial resolution is reduced (more spread of light) as the thickness of the
+% screen increases. The further the distance the light needs to travel to exit
+% the screen, the broader the psf will be. In many instances a film is sandwiched
+% between two thinner screens rather than be used with a single thick screen.
+% This can improve the resolution compared to using a single thick screen. It is
+% important that the screen and film be in close contact, as any space (poor
+% contact) will increase the area over which the light has spread.
 
-For direct digital detectors, the spatial resolution can be very high. An
-electric field can be placed across the photoconductor forcing the electrons to
-travel in direction perpendicular to the surface of the detector greatly
-reducing the lateral spread of the electrons.
+% In CsI phosphor, the crystals of CsI form long needle shaped structures. These
+% “needles” act like an optical fiber reducing the lateral spread of light
+% improving the resolution compared to turbid screens of equal thickness.
 
-f. X-ray Quantum Noise
+% For direct digital detectors, the spatial resolution can be very high. An
+% electric field can be placed across the photoconductor forcing the electrons to
+% travel in direction perpendicular to the surface of the detector greatly
+% reducing the lateral spread of the electrons.
 
-The signal in a screen-film system, the signal is radiographic contrast, as
-given in Eq. [9]. The noise in as screen-film image is $\sigma_D$, and it is
-related to the noise in the x-ray image incident on the detector, $\sigma_E$.
+% f. X-ray Quantum Noise
 
-For a uniform exposure, we can average the square of $\Delta D = D(x,y) - \bar{D}$
-over an area in the image to calculate $\sigma_D$:
-\begin{align}
-  \sigma_D^2 = \frac{1}{4XY}\int_{-X}^{X}\int_{-Y}^{Y}\Delta D^2(x,y)dxdy.
-\end{align}
-Similar equations can be written in terms of PV and exposure to the detector, $E$. 
+% The signal in a screen-film system, the signal is radiographic contrast, as
+% given in Eq. [9]. The noise in as screen-film image is $\sigma_D$, and it is
+% related to the noise in the x-ray image incident on the detector, $\sigma_E$.
 
-\begin{align}
-  \sigma_{\text{PV}}^2 &= \frac{1}{4XY}\int_{-X}^{X}\int_{-Y}^{Y}\Delta \text{PV}^2(x,y)dxdy\\
-    \sigma_{\text{E}}^2 &= \frac{1}{4XY}\int_{-X}^{X}\int_{-Y}^{Y}\Delta \text{E}^2(x,y)dxdy
-\end{align}
-Then by Eqs [10] and [11]''
-\begin{align}
-  \Delta D = CG\log_{10}e = G(\log_{10}e)\frac{\Delta E}{\bar{E}},
-\end{align}
-but
-\begin{align}
-  E &= kN \ \text{and}\\
-  \sigma_E^2 &= k^2\sigma_N^2
-\end{align}
-where $N$ is the number of photons, which is $N = A\phi$, where $A$ is the
-cross-sectional area and $\phi$ is the fluence.
+% For a uniform exposure, we can average the square of $\Delta D = D(x,y) - \bar{D}$
+% over an area in the image to calculate $\sigma_D$:
+% \begin{align}
+%   \sigma_D^2 = \frac{1}{4XY}\int_{-X}^{X}\int_{-Y}^{Y}\Delta D^2(x,y)dxdy.
+% \end{align}
+% Similar equations can be written in terms of PV and exposure to the detector, $E$. 
 
-Eq. [14] becomes:
-\begin{align}
-  \sigma_D^2 = G^2(\log_{10}^2 e ) \frac{k^2 \sigma_N^2}{k^2\bar{N}^2} = G^2(\log^2_{10}e)\frac{\sigma_N^2}{\bar{N}^2}
-\end{align}
+% \begin{align}
+%   \sigma_{\text{PV}}^2 &= \frac{1}{4XY}\int_{-X}^{X}\int_{-Y}^{Y}\Delta \text{PV}^2(x,y)dxdy\\
+%     \sigma_{\text{E}}^2 &= \frac{1}{4XY}\int_{-X}^{X}\int_{-Y}^{Y}\Delta \text{E}^2(x,y)dxdy
+% \end{align}
+% Then by Eqs [10] and [11]''
+% \begin{align}
+%   \Delta D = CG\log_{10}e = G(\log_{10}e)\frac{\Delta E}{\bar{E}},
+% \end{align}
+% but
+% \begin{align}
+%   E &= kN \ \text{and}\\
+%   \sigma_E^2 &= k^2\sigma_N^2
+% \end{align}
+% where $N$ is the number of photons, which is $N = A\phi$, where $A$ is the
+% cross-sectional area and $\phi$ is the fluence.
 
-For Poisson statistics,
-\begin{align}
-  \sigma_N^2 = \bar{N} = A\bar{\phi} \text{and}
-  \frac{\sigma^2_N}{\bar{N}^2} = \frac{1}{\bar{N}} = \frac{1}{A\bar{\phi}}. 
-\end{align}
+% Eq. [14] becomes:
+% \begin{align}
+%   \sigma_D^2 = G^2(\log_{10}^2 e ) \frac{k^2 \sigma_N^2}{k^2\bar{N}^2} = G^2(\log^2_{10}e)\frac{\sigma_N^2}{\bar{N}^2}
+% \end{align}
 
-Inserting Eq. [19] into [17] gives:
-\begin{align}
-  \sigma_D^2 = \frac{G^2(\log^2_{10} e)}{A\bar{\phi}}.
-\end{align}
+% For Poisson statistics,
+% \begin{align}
+%   \sigma_N^2 = \bar{N} = A\bar{\phi} \text{and}
+%   \frac{\sigma^2_N}{\bar{N}^2} = \frac{1}{\bar{N}} = \frac{1}{A\bar{\phi}}. 
+% \end{align}
 
-For a digital system, $\text{PV} = GE$ and therefore
-\begin{align}
-  \Delta\text{PV} = G\Delta E. 
-\end{align}
-Now using Eqs. [13] and [20]
-\begin{align}
-  \sigma_{PV}^2 = G^2\sigma_E^2.
-\end{align}
-Using Eqs [16], [17], [18] and [21]
-\begin{align}
-  \sigma_{\text{PV}}^2 = G^2k^2\sigma_N^2 = G^2k^2A\bar{\phi}
-\end{align}
+% Inserting Eq. [19] into [17] gives:
+% \begin{align}
+%   \sigma_D^2 = \frac{G^2(\log^2_{10} e)}{A\bar{\phi}}.
+% \end{align}
 
-Note $\sigma_D^2 \propto \frac{1}{\bar{\phi}}$, but $\sigma_{\text{PV}}^2 \propto \bar{\phi}$.
+% For a digital system, $\text{PV} = GE$ and therefore
+% \begin{align}
+%   \Delta\text{PV} = G\Delta E. 
+% \end{align}
+% Now using Eqs. [13] and [20]
+% \begin{align}
+%   \sigma_{PV}^2 = G^2\sigma_E^2.
+% \end{align}
+% Using Eqs [16], [17], [18] and [21]
+% \begin{align}
+%   \sigma_{\text{PV}}^2 = G^2k^2\sigma_N^2 = G^2k^2A\bar{\phi}
+% \end{align}
 
-Note in real imaging systems, there are other noise sources. In particular, in
-a screen-film system there is noise due the finite size and number of the silver
-grains in the developed film; and in a digital system there is electronic noise
-from the device that captures the light (indirect detectors) or the electrons
-(direct detectors). These are usually small compared to quantum noise, at low
-spatial frequencies. More about this in the lecture on noise.
+% Note $\sigma_D^2 \propto \frac{1}{\bar{\phi}}$, but $\sigma_{\text{PV}}^2 \propto \bar{\phi}$.
 
-SNR (ignoring image blurring and considering only x-ray quantum noise)
+% Note in real imaging systems, there are other noise sources. In particular, in
+% a screen-film system there is noise due the finite size and number of the silver
+% grains in the developed film; and in a digital system there is electronic noise
+% from the device that captures the light (indirect detectors) or the electrons
+% (direct detectors). These are usually small compared to quantum noise, at low
+% spatial frequencies. More about this in the lecture on noise.
 
-For screen-film systesms, using Eqs. [10] and [19]
-\begin{align}
-  \text{SNR}_{\text{film}} = \frac{\Delta D}{\sigma_D} = \frac{GC(\log_{10}e)}{\sqrt{\frac{G^2(\log_{10}^2e)}{A\bar{\phi}}}} = C\sqrt{A\bar{\phi}},
-\end{align}
-which is the same as Eq. [3]. 
+% SNR (ignoring image blurring and considering only x-ray quantum noise)
 
-For a digital system, using Eqs. [15], [20] and [22]
-\begin{align}
-  \text{SNR}_{\text{digital}} = \frac{\Delta \text{PV}}{\sigma_{PV}} = \frac{G\Delta E}{\sqrt{G^2 k^2 A\phi}} = \frac{k\Delta N}{\sqrt{k^2 A\phi}} = \frac{A\Delta \phi}{\sqrt{A\phi}} = C\sqrt{A\bar{\phi}},
-\end{align}
-which is again Eq. [3].
+% For screen-film systesms, using Eqs. [10] and [19]
+% \begin{align}
+%   \text{SNR}_{\text{film}} = \frac{\Delta D}{\sigma_D} = \frac{GC(\log_{10}e)}{\sqrt{\frac{G^2(\log_{10}^2e)}{A\bar{\phi}}}} = C\sqrt{A\bar{\phi}},
+% \end{align}
+% which is the same as Eq. [3]. 
 
-Non-ideal Detectors
+% For a digital system, using Eqs. [15], [20] and [22]
+% \begin{align}
+%   \text{SNR}_{\text{digital}} = \frac{\Delta \text{PV}}{\sigma_{PV}} = \frac{G\Delta E}{\sqrt{G^2 k^2 A\phi}} = \frac{k\Delta N}{\sqrt{k^2 A\phi}} = \frac{A\Delta \phi}{\sqrt{A\phi}} = C\sqrt{A\bar{\phi}},
+% \end{align}
+% which is again Eq. [3].
 
-Assume the imaging system is linear or linearizable. Further assume $w_{in}(u)$
-is the input stimulus where $u$ is an independent variable and $w_{out}(u)$ is
-the output response of the system. If there are two inputs, which produce two
-outputs, that is: $w'_{out}(u) = w'_{in}(u)$ and $w''_{out}(u) = w''in(u)$, the
-system is said to be linear if, when both inputs are applied together, $w_{in}(u) =
-w'in(u) + w''in(u)$, the output is given by: $wout(u) = w'out(u) + w''out(u)$.
+% Non-ideal Detectors
 
-For a real (non-ideal) imaging system, the input maybe localized to a location
-$u_0$, the response at the output is spread over a range of $u$ centered on
-$u0$. Conversely, any point at the output will depend on input stimuli over a
-range of positions at the input, that is:
-\begin{align*}
-  w_{out}(u) = \int_{-\infty}^{\infty} p(u, u') w_{\text{in}}(u')du'
-\end{align*}
-Let $w_{\text{in}}(u) = \delta(u - u_0)$.
-\newpage
+% Assume the imaging system is linear or linearizable. Further assume $w_{in}(u)$
+% is the input stimulus where $u$ is an independent variable and $w_{out}(u)$ is
+% the output response of the system. If there are two inputs, which produce two
+% outputs, that is: $w'_{out}(u) = w'_{in}(u)$ and $w''_{out}(u) = w''in(u)$, the
+% system is said to be linear if, when both inputs are applied together, $w_{in}(u) =
+% w'in(u) + w''in(u)$, the output is given by: $wout(u) = w'out(u) + w''out(u)$.
+
+% For a real (non-ideal) imaging system, the input maybe localized to a location
+% $u_0$, the response at the output is spread over a range of $u$ centered on
+% $u0$. Conversely, any point at the output will depend on input stimuli over a
+% range of positions at the input, that is:
+% \begin{align*}
+%   w_{out}(u) = \int_{-\infty}^{\infty} p(u, u') w_{\text{in}}(u')du'
+% \end{align*}
+% Let $w_{\text{in}}(u) = \delta(u - u_0)$.
+% \newpage
 \end{document}

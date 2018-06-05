@@ -95,17 +95,14 @@ in an area the size of the object when the object is absent.
   N &= \sqrt{\text{E}\{A\bs{\phi}_1\}}\\
   N &= \sqrt{A\text{E}\{\bs{\phi}_1\}}.
 \end{align}
-
 Finally, the signal-to-noise ratio is given by
  \begin{align}
-   \text{SNR} &\equiv \frac{S}{N} = \frac{A\Delta\phi}{\sqrt{AE\{\bs{\phi}_1\}}}
+   \text{SNR} &\equiv \frac{S}{N} = \frac{A\Delta\phi}{\sqrt{AE\{\bs{\phi}_1\}}},\\
+   \text{SNR} &= C\sqrt{A\bar{\phi}}, \label{eq:snrcontrast}
  \end{align}   
-% %  \text{SNR} &= C\sqrt{A\bar{\phi}} 
-% ^ is there a reason you've left this out?
- 
-where $C$ is the radiation contrast:
+where $C$ is the radiation contrast
 \begin{align}
-  C = \frac{\Delta\phi}{\bar{\phi}}
+  C = \frac{\Delta\phi}{\bar{\phi}}.
 \end{align}
 This is the SNR for an ideal detector where we've assumed that there is
 \begin{itemize}

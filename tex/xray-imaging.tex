@@ -316,22 +316,37 @@ Our final result is then
 \end{align}
 
 Recall that the double-primed coordinate represent the frequency vector
-in the image plane. We can also express Equation~\ref{eq:ft2} in the
-object ($\bs{\rho}'$) and source ($\bs{\rho}$) planes:
+in the image plane.  By letting $\bs{\rho}'' = a\bs{\rho}'$ and 
+$\bs{\rho}'' = -a\bs{\rho}/b$ we can also express Equation~\ref{eq:ft2} in the
+object ($\bs{\rho}'$) and source ($\bs{\rho}$) planes as follows:
 \begin{align}
-  H(a\bs{\rho}') &= (C/a^2)F(-b\bs{\rho}')G(\bs{\rho}')\\
+  H(a\bs{\rho}') &= (C/a^2)F(-b\bs{\rho}')G(\bs{\rho}')\
+  \label{eq:ft3}
+\end{align}
+\begin{align}
   H(-a\bs{\rho}/b) &= (C/a^2)F(\bs{\rho})G(-\bs{\rho}/b).
+  \label{eq:ft4}
 \end{align}
 
-\subsubsection{Effect of focal spot}
+In each of Equations~\ref{eq:ft2}, ~\ref{eq:ft3}, and ~\ref{eq:ft4}, the Fourier transform of the image is a 
+product of the Fourier transform of the source and the Fourier transform of the object.
+In the image plane, the Fourier transform of the image is not scaled but the Fourier
+transform of the object is scaled and the Fourier transform of the source is both scaled 
+and inverted as in its projection by a pin-hole camera.  In the object plane, the object
+is not scaled.  In the source plane, the source is not scaled.  Proper scaling of the source, object, and 
+image is important to make these equations work.
+
+\subsubsection{Image of the focal spot}
 
 The perhaps non-intuitive result of this analysis is that the x-ray source plays
 such an important role in the imaging chain. We have shown that the detected
 image can be modeled as a convolution of the object with the x-ray source -- the
 source is thus always ``in'' the image, in a certain sense. We would like to
-characterize this effect in more detail.
+characterize this effect in more detail.  We recognize that the image of the x-ray source
+is really the point-spread function (PSF), and Equation~\ref{eq:ft2} should 
+convince us of that.
 
-We can model the x-ray source as a ``focal spot,'' a uniform, emissive disk of
+Let us model the x-ray source ``focal spot'' simplistically as a uniform, emissive disk of
 diameter $d_{fs}$, so the emission function is
 \begin{align}
   f(\bs{r}) = f_0 \text{ circ}\left(\frac{2r}{d_{fs}}\right),

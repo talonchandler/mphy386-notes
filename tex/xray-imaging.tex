@@ -113,7 +113,7 @@ This is the SNR for an ideal detector where we've assumed that there is
 
 \fig{img/contrast.png}{.25}{Test}{constrast}
 
-\subsection{Linear Systems Model}
+\subsection{Linear Systems Model of Transmission Radiography}
 
 In this section, we aim to devise a mathematical model to
 describe transmission radiography. Specifically, we would like to
@@ -122,37 +122,55 @@ image as a convolution of the object with a point spread function (PSF)
 contributed by both the x-ray source and the detector.
 
 To begin, we consider a simplified geometric representation of an x-ray
-system, shown in Figure~\ref{fig:xraymodel}:
+system, shown in Figure~\ref{fig:xraymodel}, and a few simplifying
+assumptions:
+
+\begin{itemize}
+\item we have a 2D, planar, isotropic source, far from the detector plane ($\theta\approx 0$)
+\item we have a 2D planar object, which does not introduce scattered radiation
+\item we have an ideal detector, which perfectly detects every photon it encounters
+\end{itemize}
 
 \fig{img/xraymodel.png}{0.65}{Simplified geometry of a radiographic
   imaging system. Note: we will refer to the central plane as the
 ``object plane,'' not ``aperture plane,'' as it appears here.}{xraymodel}
 
 X-rays are generated at the anode of an x-ray tube, located in the
-\textbf{source plane} (with coordinate $\bs{r}$). They then pass through the
-\textbf{object plane} (with coordinate $\bs{r}'$), before
-being detected at the \textbf{detector plane} (with coordinate $\bs{r}''$).
+\textbf{source plane} (with an elemental area at coordinate $\bs{r}$). They then pass through the
+\textbf{object plane} (with an elemental area at coordinate $\bs{r}'$), before
+being detected at the \textbf{detector plane} (with an elemental area at coordinate $\bs{r}''$).
 The distance between the source and object planes is $s_1$, and the distance
-between the object and detector planes is $s_2$. Clearly, there are a number
-of idealizations in this setup. We model the 3D anode and 3D object as
-2D planes, and assume that all three planes are parallel. Regardless,
-we can still draw important insights from this simplified model.
+between the object and detector planes is $s_2$. It's worth noting that
+$\bs{r}$ and $\bs{r}''$, which determines $\bs{r}'$ through the line of sight,  are completely general, in
+the sense that there is nothing special about these vectors.  None of $\bs{r}$, $\bs{r}''$, and 
+$\bs{r}'$ necessarily ends at the origin of their respective plane.  Our goal is to derive an expression for 
+the density of detected photons in the detector plane, $h(\bs{r}'')$, such that $h(\bs{r}'')d^2\bs{r}''$ is the mean
+number of photons intercepted by the detector area $d^2\bs{r}''$ in a time of length T, which 
+we recognize is our image of the object. \\
 
-\subsubsection{The Source}
+Clearly, there are a number of idealizations in this setup. We model 
+the 3D anode, the 3D object, and the 2D detector as 2D parallel planes. 
+But we have a path for modeling a realistic system.  The 3D anode can be
+modeled as a series of contiguous parallel planes, and so can the 3D object.  
+Out goal here is to learn important insights from this simplified model.
+
+\subsubsection{The Source Plane}
 
 We describe the source by an \textit{emission function} $f(\bs{r})$, where
 $\bs{r}$ is the two-dimensional vector in the source plane. The emisison
 function has units of fluence rate: (photons / unit time $\cdot$ unit
 area). Thus, the quantity $f(\bs{r})d^2 r$ is the \textit{mean} number of
 photons per unit time emitted into all space from an elemental area $d^2 r$
-located at the point $\bs{r}$. Note that this introduces another assumption that
-the source emits photons isotropically. In fact, bremsstrahlung photons have
+located at the point $\bs{r}$. This assumes that
+the source emits photons isotropically. However, bremsstrahlung photons have
 a definite preferred orientation which depends on electron energy, angle of
-electron incidence, and target material.
+electron incidence, and target material.  It is possible to incorporate this 
+anisotropy if we modulate $f(\bs{r})$ by the emission orientation
+distribution function.  We omit that here.
 
 \fig{img/solidangle}{0.65}{Diagram for solid-angle calculation.}{solidangle}
 
-\subsubsection{The Detector}
+\subsubsection{The Detector Plane}
 
 Now, let us consider an elemental detector of area $d^2\bs{r}''$, where
 $\bs{r}''$ is the two-dimensional position vector in the detector plane.
@@ -176,10 +194,10 @@ so we can rewrite Equation~\ref{eq:sa} as
 
 Since a full sphere subtends $4\pi$ steradians, the detector element would
 intercept a fraction $d\bs{\Omega}/4\pi$ of the radiation emitted from
-any source element in the absence of absorbing material in between
-the source and detector planes. In this case, the mean number of
-photons per unit time (1) emitted by the area element $d^2\bs{r}$ in the source
-plane and (2) intercepted by the area element $d^2\bs{r}''$ in the detector
+the source element at location $\bs{r}$--in the absence of absorbing material in the
+object plane at location $\bs{r}'$. Thus, the mean number of
+photons per unit time (1) emitted by the area element $d^2\bs{r}$ at location $\bs{r}$ in the source
+plane and (2) intercepted by the area element $d^2\bs{r}''$ at location $\bs{r}''$ in the detector
 plane would be
 \begin{align}
   f(\bs{r})d^2\bs{r}\frac{d\bs{\Omega}}{4\pi} = f(\bs{r})\frac{\text{cos}^3\theta}{4\pi(s_1+s_2)^2}d^2\bs{r}d^2\bs{r}''.
@@ -196,7 +214,7 @@ We now consider the effect of the object. We introduce another restriction
 that we are only dealing with \textit{primary} x-rays; we will discuss the
 effect of scattered radiation later. A ray emanating from point $\bs{r}$ and
 striking the detector at point $\bs{r}''$ will have passed through the object
-plane at point $\bs{r}'$. We define $g(\bs{r}')$ as the transmittance, or the
+plane at point $\bs{r}'$ through the line of sight. We define $g(\bs{r}')$ as the transmittance, or the
 fraction of photons that pass through the object plane at point $\bs{r}'$.
 
 We are now in a position to write down an expression for $h(\bs{r}'')$, the
@@ -212,74 +230,87 @@ $h(\bs{r}'')$ has dimensions of fluence (photons per unit area), though
 we refer to $h(\bs{r}'')$ as a \textit{photon density} instead, as that
 term is more appropriate to a static pattern of recorded photons.
 
+We now try to write Equation~\ref{eq:h1} without the use of $\bs{r}'$.  That is,
+we will try to write our image not in terms of the object plane,  only in terms
+of the source plane and image plane.
+
 Looking closely at the geometry of Figure~\ref{fig:xraymodel}, we
 see that
 \begin{align}
-  \frac{\bs{r}'-\bs{r}}{s_1} = \frac{\bs{r}''-\bs{r}'}{s_2},
+  \frac{\bs{r}'-\bs{r}}{s_1} = \frac{\bs{r}''-\bs{r}'}{s_1+s_2},
   \label{eq:v1}
 \end{align}
-or, equivalently:
+where the vectors on the left-hand side are evaluated in the object plane
+and the vectors on the right-hand side are evelauted in the image plane.
+Equivalently:
 \begin{align}
   \bs{r}' = \frac{s_2}{s_1 + s_2}\bs{r} + \frac{s_1}{s_1+s_2}\bs{r}'' = a\bs{r}'' + b\bs{r},
   \label{eq:v2}
 \end{align}
-where
+evaluated in the object plane and where
 \begin{align}
-  a = \frac{s_1}{s_1+s_2} & & b = \frac{s_2}{s_1 + s_2} = 1 - a,
+  a = \frac{s_1}{s_1+s_2} & & b = \frac{s_2}{s_1 + s_2} = 1 - a.
 \end{align}
-and we have eliminated the vector $\bs{r}'$. Note that Equations~\ref{eq:v1}
-and~\ref{eq:v2} describe 2D (not 3D!) vector subtractions in the parallel $(x,y)$
-and $(x',y')$ planes. The 3D distance $R$ would be written
+Now we can eliminate the vector $\bs{r}'$. Note that Equations~\ref{eq:v1}
+and~\ref{eq:v2} describe 2D (not 3D!) vector subtractions in the parallel $(x',y')$
+and $(x'',y'')$ planes. The 3D distance $R$ would be written
 \begin{align}
   R = \sqrt{|\bs{r}-\bs{r}''|^2 + (s_1+s_2)^2}.
 \end{align}
-With this simplification, we can rewrite Equation~\ref{eq:h1} without the use of $\bs{r}'$ as
+With Equation~\ref{eq:v2}, we rewrite Equation~\ref{eq:h1} without the use of $\bs{r}'$ as
 \begin{align}
   h(\bs{r}'')d^2\bs{r}'' = Cd^2\bs{r}''\int_{\text{source}}d^2\bs{r} \text{ cos}^3\theta f(\bs{r})g(a\bs{r}'' + b\bs{r}),
+  \label{eq:h2}
 \end{align}
 where
 \begin{align}
   C = \frac{T}{4\pi(s_1+s_2)^2}.
 \end{align}
-We are generally interested in systems where $s_1 + s_2$ is large compared to $|\bs{r}|$ or $|\bs{r}''|$. We
+
+What we have achieved in Equation~\ref{eq:h2} is that we have written our image in terms
+of the x-ray source and the transmittance of the object that relates to the image and the x-ray 
+source through the line of sight.  The vector $a\bs{r}'' + b\bs{r}$ tells us where to evaluate
+the transmittance function $g$, which is precisely the location in the object plane through the line of
+sight between the source element $\bs{r}$ and the image element $\bs{r}''$.  Equation~\ref{eq:h2} tells 
+us how our image is composed and it gives us a hint of what we could learn about the object from our image.
+
+It is possible to further simplify Equation~\ref{eq:h2}.  We are generally interested in 
+systems where $s_1 + s_2$ is large compared to $|\bs{r}|$ or $|\bs{r}''|$. We
 can thus make the approximation $\theta \approx 0$ and $\text{cos}^3\theta \approx 1$. Dropping the
-$d^2\bs{r}''$ factor from both sides, this leaves us with our final model for the density of detected
-photons:
+$d^2\bs{r}''$ factor from both sides, this leaves us with:
 \begin{align}
   h(\bs{r}'') \approx C\int_{source}d^2 \bs{r} f(\bs{r})g(a\bs{r}'' + b\bs{r}).
   \label{eq:hfinal}
 \end{align}
 
-It is important to keep track of the various assumptions we used to build this model.
-To summarize, we assume:
-\begin{itemize}
-\item we have a 2D, planar, isotropic source that is far from the detector plane ($\theta\approx 0$)
-\item we have a 2D planar object that does not introduce scattered radiation
-\item we have an ideal detector that perfectly detects every photon it encounters
-\end{itemize}
-
 \subsubsection{Reduction to a Convolution}
 
-Equation~\ref{eq:hfinal} is starting to resemble a convolution integral. To exploit this
-resemblance, we define a new variable $\bs{r}_0''$, given by
+Equation~\ref{eq:hfinal} is starting to resemble a convolution integral. We will now explore this
+resemblance further.  We will try to write the integral in Equation~\ref{eq:hfinal} as over the image
+plane instead of over the source plane.  To do this, we will need to project the $f$ and $g$ fuctions
+onto the image plane before integrating them over the image plane.  Appropriate scaling of the 
+$f$ and $g$ fuctions based on the geometry is needed.  We define a new variable $\bs{r}_0''$, given by
 \begin{align}
-  \bs{r}_0'' = \frac{s_2}{s_1}\bs{r} = -\frac{b}{a}\bs{r}.
+  \bs{r}_0'' = -\frac{s_2}{s_1}\bs{r} = -\frac{b}{a}\bs{r}.
 \end{align}
 Multiplication of $\bs{r}$ by $-b/a$ is equivalent to projecting it through a
-point in the object plane to the image plane, as illustrated in Figure~\ref{fig:r0}.
+point (the origin) in the object plane to the image plane, as illustrated in Figure~\ref{fig:r0}.  Thus,
+we can use $\bs{r}_0''$ to define a scaled version of $f$ as $\tilde{f}$, the tilde indicating 
+\textit{projection onto the image plane}.
+\begin{align}
+  \tilde{f}(\bs{r}_0'') &= f(\bs{r}) = f\left(-\frac{a}{b}\bs{r}_0''\right)\\
+\end{align}
 
 \fig{img/r0}{0.5}{Illustration of $\bs{r}_0''$.}{r0}
 
-We can use $\bs{r}_0''$ to define scaled versions of $f$ (the source emittance)
-and $g$ (the object transmittance).  We define these scaled functions as
-$\tilde{f}$ and $\tilde{g}$, respectively:
+We can also use $\bs{r}_0''$ to define a scaled version of $g$ as $\tilde{g}$, effectively projecting
+$g$ from the object plane onto the image plane from a point in the source plane (defined
+by the vector $\bs{r}$).  
 \begin{align}
-  \tilde{f}(\bs{r}_0'') &= f(\bs{r}) = f\left(-\frac{a}{b}\bs{r}_0''\right)\\
   \tilde{g}(\bs{r}_0'') &= g(a\bs{r}_0'').
 \end{align}
 
-The tilde thus indicates \textit{projection of the initial functions onto the image plane}. We
-can rewrite $g$ in terms of these new variables: 
+We can rewrite $g$ in terms of these new variables: 
 \begin{align}
   g(a\bs{r}'' + b\bs{r}) = g(a\bs{r}''-a\bs{r}_0'') = \tilde{g}(\bs{r}'' - \bs{r}_0''),
 \end{align}
@@ -289,13 +320,17 @@ which leads to a final form for $h(\bs{r}'')$:
              &=\left(\frac{a}{b}\right)^2 C \tilde{f}(\bs{r}'') \ast \ast \text{ } \tilde{g}(\bs{r}'')
 \end{align}
 where the $\infty$ subscript in the integral indicates integration over the
-entire 2D detector plane. We have thus achieved our goal and described the
+entire 2D detector plane.  By looking at the geometry carfully, it is reassuring to see that $\tilde{g}$
+in the integral is evaluated at exact where it should be -- through the line of sight connecting the
+source element and image element.  \\
+
+We have thus achieved our goal and described the
 detected photon density as the output of a 2D linear system with input
 $\tilde{f}$ and kernel proportional to $\tilde{g}$ (or equivalently, an input
 $\tilde{g}$ and kernel proportional to $\tilde{f}$). As with any linear system, a
 frequency-domain description is very useful:
 \begin{align}
-  \mathscr{F}_2\left\{h(\bs{r}'')\right\} = H(\bs{\rho}'') = (a/b)^2 C \tilde{F}(\bs{\rho}'')\tilde{G}(\bs{\rho}),
+  \mathscr{F}_2\left\{h(\bs{r}'')\right\} = H(\bs{\rho}'') = (a/b)^2 C \tilde{F}(\bs{\rho}'')\tilde{G}(\bs{\rho}''),
   \label{eq:ft1}
 \end{align}
 where $\bs{\rho}''$ is the spatial frequency vector conjugate to $\bs{r}''$ in the image plane.
@@ -366,7 +401,7 @@ defined as:
 \fig{img/focal_spot}{0.75}{Diagram illustrating the calculation of the point
   spread function for transmission radiography with a disklike focal spot.}{fs}
 
-To find the PSF of the system, we consider a point
+To find the image of the focal spot, and nothing else, we consider a point
 object input described by
 \begin{align}
   g(\bs{r}') = \delta(\bs{r}'-\bs{r}_1'),
@@ -376,11 +411,11 @@ where $\bs{r}_1'$ is the location of the point in the object plane. The notion
 of a ``point'' transmission might seem counterintuitive -- we are describing a
 hypothetical object that becomes ``infinitely transmissive'' over an
 infinitesimal area. You might consider a pinhole aperture with area
-approaching zero while the exposure time is increased proportionally.
+approaching zero while the exposure time is increased proportionally.  It should
+be clear now the image of this point object from the x-ray focal spot is just
+an image of the focal spot and the PSF.
 
-The PSF is just the image of a point source measured in the detector plane --
-i.e., the pinhole image of the focal spot. Substituting Equations~\ref{eq:fsdef}
-and~\ref{eq:pinhole} into~\ref{eq:hfinal}, we find
+Substituting Equations~\ref{eq:fsdef} and~\ref{eq:pinhole} into~\ref{eq:hfinal}, we find
 \begin{align}
   h(\bs{r}'') &= C \int_{source} d^2\bs{r} f_0 \text{ circ} \left(\frac{2r}{d_{fs}}\right)\delta(a\bs{r}'' + b\bs{r}-\bs{r}')\nonumber\\[6pt]
               &= \left(\frac{C}{b^2}\right) f_0 \text{ circ}\left[\frac{2|a\bs{r}'' - \bs{r}_1'|}{bd_{fs}}\right]\nonumber\\[6pt]
@@ -391,34 +426,28 @@ describes a uniform disk image of diameter $d_{fs}''$, given by
 \begin{align}
   d_{fs}'' = \frac{b}{a}d_{fs} = \frac{s_2}{s_1}d_{fs}.
 \end{align}
-The disk is centered at $\bs{r}'' = \bs{r}_1'/a = \bs{r}_1'(s_1 + s_2)/s_1$, the
-magnification $m_t$ is therefore $(s_1 + s_2)/s_1$. Note that $m_t$ is always a positive number greater than 1.
+This disk image of the disk focal spot is centered at $\bs{r}'' = \bs{r}_1'/a = \bs{r}_1'(s_1 + s_2)/s_1$, the
+magnification $m_t$ is therefore $(s_1 + s_2)/s_1$. Note that $m_t$ is always a positive number greater than 1. \\
 
-To completely specify the PSF we must also include the effects of the image
-detector, which we have so far neglected. An ideal detector would produce output
-directly proportional to $h(\bs{r''})$. Real detectors, however, further degrade
-the image and must be treated as independent linear systems. Cascaded linear
-systems are easiest to deal with in the frequency domain, so we consider the
-input of the \textit{detector} system to be $H(\bs{\rho}'')$, the
-Fourier transform of $h(\bs{r}'')$. We denote the transfer function of
-the detector as $D(\bs{\rho}'')$, so the detector output is just
-$D(\bs{\rho}'')H(\bs{\rho}'')$. Using Equation \ref{eq:ft2}, we can write this
-as
+Up to this point we have assumed the detector to be perfect.  But Equations~\ref{eq:ft2}
+tells us that if we model the detector as a linear system with a transfer function, it's
+easy to incorporate into our modeling a realistic detector through its transfer function.
+Let us denote the detector transfer function as $D(\bs{\rho}'')$.  The detector output from
+input $H(\bs{\rho}'')$ is just $D(\bs{\rho}'')H(\bs{\rho}'')$.  In the spatial domain,
+the input is $h(\bs{r}'')$ and the output is $h(\bs{r}'')$ convolved with the detection
+PSF.  Using Equation \ref{eq:ft2}, we can write this as
 \begin{align}
   D(\bs{\rho}'')H(\bs{\rho}'') = (C/a^2)D(\bs{\rho}'')F(-b\bs{\rho}''/a)G(\bs{\rho}''/a).
 \end{align}
 
-This describes the transfer of spatial frequencies $G(\bs{\rho}''/a)$, the
-object function scaled into the detector plane. We are \textit{actually}
-interested in how the spatial frequencies of the object in the \textit{object
-  plane} (i.e., with no scaling) are affected by the system, so we let
-$\bs{\rho}' = \bs{\rho}''/a$ and rewrite our result as
+We can rewrite this in the object plane so that the object spatial frequencies are not
+scaled, by letting $\bs{\rho}'' = a\bs{\rho}'$, as
 \begin{align}
   D(a\bs{\rho}')H(a\bs{\rho}') = (C/a^2)D(a\bs{\rho}')F(-b\bs{\rho}')G(\bs{\rho}').
 \end{align}
-Note that $G(\bs{\rho}')$ now appears on the right side with no scaling. The
-overall transfer function of the system for spatial frequencies in the object
-plane is thus given by
+$G(\bs{\rho}')$ now appears on the right side with no scaling. The
+overall transfer function of the system with respect to the object is thus given by
+the coefficient of $G(\bs{\rho}')$:
 \begin{align}
   TF_{tot}(\bs{\rho}') = P_{tot}(\bs{\rho}') = (C/a^2)D(a\bs{\rho}')F(-b\bs{\rho}'),
   \label{eq:TFtot}
@@ -439,13 +468,17 @@ and $p_{det}(\bs{r}')$ is the PSF due to the detector:
   \label{eq:psfdet}
 \end{align}
 
-\subsubsection{Design Considerations}
+These results confirm that the x-ray focal spot is indeed ``n'' every image, that the
+total system PSF is composed of the image of the focal spot convolved with the PSF of the
+detector.
 
-We can now discuss how to use our results from the linear systems
-model to optimize our imaging system design. Specifically, we see
-that there is an optimum magnification even if there is no limitation
-imposed by the finite detector size. Recall that the magnification is
-given by
+\subsubsection{Optimal Design Considerations}
+
+How do we decide on the geometrical aspect of our image system, namely, $s_1$ and $s_2$?  Now that
+we have learned what the total system transfer function is composed of, we can explore how to optimize
+our system design.
+
+Recall that the magnification is defined as
 \begin{align}
   m_t = \frac{s_1+s_2}{s_1} = \frac{1}{a} = \frac{1}{1-b}.
   \label{eq:mag1}
@@ -462,14 +495,17 @@ we see that
   p_{det}(\bs{r}') &\propto d(m_t\bs{r}')\label{eq:psfdetmag}
 \end{align}
 The width of $p_{fs}(\bs{r}')$ is smallest when the coefficient of $\bs{r}'$ of
-Equation~\ref{eq:psffsmag} is the largest, which occurs when $m_t = 1$. Blurring
-from the focal spot is thus minimized for ``contact'' imaging ($s_2 = 0$), when
+Equation~\ref{eq:psffsmag} is the largest, which occurs when $m_t = 1$. That is, blurring
+from the focal spot is minimized in ``contact'' imaging ($s_2 = 0$), when
 the detector is in direct contact with the object being imaged, and there is no
-magnification. We see from Equation~\ref{eq:psfdetmag}, however, that a large
-magnification is needed to minimize blurring from the detector.
+magnification. However, we see from Equation~\ref{eq:psfdetmag} that, to minimize blurring
+from the detector,  a large magnification is needed.  So the results of these design 
+considerations are opposite to each other.  Contact imaging is best to minimize the blurring effect
+of the finite size of the focal spot and magnification imaging is best to reduce the effect
+of detector blur. \\
 
-To optimize the choice of magnification, then, we can model the PSFs from the
-focal spot and detector as Gaussians. Recall that the Fourier transform of a
+It is possible to further optimize the choice of magnification if we make additional simplifying
+assumptions.  Let us model the PSFs from the focal spot and detector as Gaussians. Recall that the Fourier transform of a
 Gaussian function is another Gaussian function. In the frequency domain then, we
 will assume that
 \begin{align}
@@ -479,7 +515,7 @@ will assume that
 where $\rho_d''$ and $\rho_f$ are characteristic widths of the MTF of the detector and
 focal spot, respectively. We find the overall MTF from Equation~\ref{eq:TFtot},
 \begin{align}
-  \text{MTF}_{tot} = \frac{|P_{tot}(\bs{\rho}')|}{P_{tot}(0)} \propto \text{exp}\left[-\pi(a\bs{\rho}'/\rho_d'')^2\right]\text{exp}\left[-\pi(b\bs{\rho}'/\rho_f'')^2\right].
+  \text{MTF}_{tot} = \frac{|P_{tot}(\bs{\rho}')|}{P_{tot}(0)} \propto \text{exp}\left[-\pi(a\bs{\rho}'/\rho_d'')^2\right]\text{exp}\left[-\pi(b\bs{\rho}'/\rho_f)^2\right].
 \end{align}
 From Equations~\ref{eq:mag1} and~\ref{eq:mag2}, this can be written as
 \begin{align}
@@ -491,7 +527,7 @@ The width of MTF$_{tot}$ will be an extremum if
 \end{align}
 which has the solution
  \begin{align}
-  m_t^{opt} = 1 + \left(\frac{p_f}{p_d}\right)^2.
+  m_t^{opt} = 1 + \left(\frac{p_f}{p_d''}\right)^2.
   \label{eq:magopt}
 \end{align}
 
